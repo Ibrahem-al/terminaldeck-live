@@ -1,0 +1,32 @@
+{
+  "name": "terminaldeck-website",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "description": "The interactive marketing site for TerminalDeck — command a fleet of AI coding agents from one private terminal workspace.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 4317"
+  },
+  "dependencies": {
+    "lucide-react": "^0.469.0",
+    "motion": "^11.15.0",
+    "qrcode.react": "^4.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0"
+  },
+  "devDependencies": {
+    "@fontsource-variable/schibsted-grotesk": "^5.1.0",
+    "@fontsource/ibm-plex-mono": "^5.1.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}
