@@ -148,7 +148,7 @@ export function Terminal({
           await wait(step.wait)
         }
       }
-      if (loop && alive.current) {
+      if (loop && !reduced && alive.current) {
         await wait(2600)
         if (!alive.current) return
         setRendered([])

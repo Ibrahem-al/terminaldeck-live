@@ -17,13 +17,13 @@ const pains = [
   {
     icon: KeyRound,
     title: 'Secrets in the open',
-    body: 'Secrets in plain env files, terminals you would never pipe through someone else’s cloud.'
+    body: 'Secrets sit in plain env files, on terminals you would never pipe through someone else’s cloud.'
   }
 ]
 
 export function Problem(): React.JSX.Element {
   return (
-    <Section id="problem" className="py-20 sm:py-28">
+    <Section id="problem" className="py-24 sm:py-32">
       {/* Asymmetric: framing headline on the left, hairline-divided pain list on the right.
           Collapses to a single stacked column under lg. */}
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16">
@@ -77,7 +77,7 @@ export function Problem(): React.JSX.Element {
           </h3>
           <p className="mt-1.5 max-w-[54ch] text-pretty font-ui text-[15px] leading-relaxed text-ink-2">
             One window, every session in view, your secrets staying on your machine. This is what
-            TerminalDeck fixes.
+            TerminalDeck delivers.
           </p>
         </div>
       </Reveal>

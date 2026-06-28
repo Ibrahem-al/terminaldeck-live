@@ -188,7 +188,7 @@ export function AgentChat({
         }
       }
       setBusy(false)
-      if (loop && alive.current) {
+      if (loop && !reduced && alive.current) {
         await wait(3200)
         if (!alive.current) return
         setItems([])
@@ -219,7 +219,7 @@ export function AgentChat({
           <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
             <Bot size={20} className="text-accent" />
             <p className="font-ui text-[15px] font-medium text-ink-2">Claude is standing by</p>
-            <p className="max-w-[40ch] font-ui text-[12.5px] leading-relaxed text-ink-3">
+            <p className="max-w-[40ch] font-ui text-[12.5px] leading-relaxed text-ink-2">
               Ask anything below. File edits, commands, and searches show up as activity cards in the
               conversation.
             </p>

@@ -21,7 +21,7 @@ const phoneMirror: TermStep[] = [
 
 export function Hero(): React.JSX.Element {
   return (
-    <section id="top" className="relative overflow-hidden pt-28 pb-20 sm:pt-32">
+    <section className="relative overflow-hidden pt-28 pb-20 sm:pt-32">
       {/* brass glow + blueprint grid */}
       <div aria-hidden className="bg-grid pointer-events-none absolute inset-0 opacity-40" />
       <div
@@ -114,7 +114,7 @@ export function Hero(): React.JSX.Element {
         </Reveal>
 
         {/* Trust strip (kept out of the hero stack itself) */}
-        <Reveal delay={160} className="mt-16 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 border-t border-edge-2 pt-8 text-ink-3 xl:justify-start">
+        <Reveal delay={160} className="mt-16 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 border-t border-edge-2 pt-8 text-ink-2 xl:justify-start">
           {[
             { icon: Cpu, t: 'Real PTYs: vim, Ctrl+C, ANSI, GPU-rendered' },
             { icon: ShieldCheck, t: 'No cloud · no telemetry · secrets encrypted at rest' },

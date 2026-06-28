@@ -81,7 +81,12 @@ export function PaneFrame({
         {badge && (
           <span
             className="shrink-0 truncate rounded-full px-1.5 py-px font-ui text-[9.5px] font-semibold"
-            style={{ backgroundColor: `${badge.color}26`, color: badge.color }}
+            style={{
+              backgroundColor: `${badge.color}2e`,
+              // Nudge the label toward the active theme's ink so it keeps contrast
+              // on light themes (where the raw brand hue would wash out) and dark.
+              color: `color-mix(in srgb, ${badge.color} 70%, var(--ink) 30%)`
+            }}
           >
             {badge.label}
           </span>

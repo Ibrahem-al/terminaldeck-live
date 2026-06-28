@@ -38,33 +38,58 @@ export function PhoneBar({
   title,
   status = 'open',
   back = false,
+  onBack,
   bell = false,
   add = false,
-  end = false
+  end = false,
+  onEnd
 }: {
   title: string
   status?: 'open' | 'busy' | 'idle' | 'dead'
   back?: boolean
+  onBack?: () => void
   bell?: boolean
   add?: boolean
   end?: boolean
+  onEnd?: () => void
 }): React.JSX.Element {
   return (
     <div className="flex shrink-0 items-center gap-2.5 border-b border-edge bg-raised px-3.5 pt-6 pb-3">
-      {back && <ChevronLeft size={18} className="text-ink-2" />}
+      {back &&
+        (onBack ? (
+          <button
+            type="button"
+            aria-label="Back to sessions"
+            onClick={onBack}
+            className="-ml-1 rounded-md p-1 text-ink-2 transition-colors hover:text-ink"
+          >
+            <ChevronLeft size={18} />
+          </button>
+        ) : (
+          <ChevronLeft size={18} className="text-ink-2" aria-hidden />
+        ))}
       <span
         className="h-2.5 w-2.5 shrink-0 rounded-full"
         style={{ background: dot[status], boxShadow: `0 0 8px ${dot[status]}` }}
       />
       <span className="truncate font-ui text-[15px] font-semibold text-ink">{title}</span>
       <span className="flex-1" />
-      {bell && <Bell size={17} className="text-accent" />}
-      {add && <Plus size={20} className="text-ink-2" />}
-      {end && (
-        <span className="rounded-lg border border-danger-edge px-2.5 py-1 font-ui text-[12px] font-semibold text-danger">
-          End
-        </span>
-      )}
+      {bell && <Bell size={17} className="text-accent" aria-hidden />}
+      {add && <Plus size={20} className="text-ink-2" aria-hidden />}
+      {end &&
+        (onEnd ? (
+          <button
+            type="button"
+            onClick={onEnd}
+            className="rounded-lg border border-danger-edge px-2.5 py-1 font-ui text-[12px] font-semibold text-danger transition-colors hover:bg-danger-soft"
+          >
+            End
+          </button>
+        ) : (
+          <span className="rounded-lg border border-danger-edge px-2.5 py-1 font-ui text-[12px] font-semibold text-danger">
+            End
+          </span>
+        ))}
     </div>
   )
 }

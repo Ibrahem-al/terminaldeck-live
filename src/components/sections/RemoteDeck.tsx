@@ -41,9 +41,14 @@ function RemotePhone(): React.JSX.Element {
     <PhoneFrame width={252}>
       {active ? (
         <>
-          <button className="contents" onClick={() => setActive(null)} aria-label="Back to sessions">
-            <PhoneBar title={active.name} status="busy" back end />
-          </button>
+          <PhoneBar
+            title={active.name}
+            status="busy"
+            back
+            onBack={() => setActive(null)}
+            end
+            onEnd={() => setActive(null)}
+          />
           <div className="min-h-0 flex-1">
             <Terminal script={remoteTerm} defaultCwd="~/my-app" />
           </div>
@@ -138,7 +143,7 @@ export function RemoteDeck(): React.JSX.Element {
             {features.map((f, i) => (
               <Reveal key={i} delay={180 + i * 60} className="flex items-start gap-2.5">
                 <f.icon size={15} className="mt-0.5 shrink-0 text-accent" />
-                <span className="font-ui text-[12.5px] leading-relaxed text-ink-3">{f.t}</span>
+                <span className="font-ui text-[12.5px] leading-relaxed text-ink-2">{f.t}</span>
               </Reveal>
             ))}
           </div>

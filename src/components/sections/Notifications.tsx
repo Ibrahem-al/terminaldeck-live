@@ -81,8 +81,8 @@ export function Notifications(): React.JSX.Element {
             Walk away. We’ll tell you when it’s done.
           </Reveal>
           <Reveal as="p" delay={110} className="mt-5 max-w-[48ch] font-ui text-[1.05rem] leading-relaxed text-ink-2 text-pretty">
-            TerminalDeck watches your terminals and pings you the moment a long command finishes,
-            detected invisibly through the shell integration with its real exit code and duration.
+            TerminalDeck watches your terminals through the shell integration and pings you the
+            moment a long command finishes, with its real exit code and duration.
           </Reveal>
 
           <Reveal delay={150} className="mt-7">
@@ -106,7 +106,7 @@ export function Notifications(): React.JSX.Element {
 
           <Reveal delay={210} className="mt-6 flex items-start gap-2.5 rounded-lg border border-edge-2 bg-raised/40 px-3.5 py-3">
             <Timer size={15} className="mt-0.5 shrink-0 text-accent" />
-            <p className="font-ui text-[12.5px] leading-relaxed text-ink-3">
+            <p className="font-ui text-[12.5px] leading-relaxed text-ink-2">
               Real Web Push reaches your phone even when RemoteDeck is closed or on another network.
               Trivial commands never spam you. Only ones that ran longer than your threshold (20s by default).
             </p>

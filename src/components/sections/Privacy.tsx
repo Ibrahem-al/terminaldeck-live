@@ -36,8 +36,10 @@ const guarantees: Guarantee[] = [
     title: 'Never exposed to the internet',
     body: (
       <>
-        RemoteDeck rides Tailscale serve inside your private tailnet, never funnel. No port
-        forwarding, no public URL.
+        RemoteDeck rides <code className="font-mono text-[13px] text-ink">tailscale serve</code>{' '}
+        inside your private tailnet, never the public{' '}
+        <code className="font-mono text-[13px] text-ink">tailscale funnel</code>. No port forwarding,
+        no public URL.
       </>
     )
   },

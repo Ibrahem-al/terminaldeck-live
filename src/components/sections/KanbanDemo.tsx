@@ -137,11 +137,20 @@ export function KanbanDemo(): React.JSX.Element {
                         <article
                           key={card.id}
                           draggable
+                          role="button"
+                          tabIndex={0}
+                          aria-label={`Advance task "${card.title}" to the next column`}
                           onDragStart={() => setDragId(card.id)}
                           onDragEnd={() => setDragId(null)}
                           onClick={() => advance(card.id)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault()
+                              advance(card.id)
+                            }
+                          }}
                           className={cn(
-                            'cursor-grab rounded-lg border border-edge-2 bg-raised px-2.5 py-2 transition-[border-color,box-shadow,opacity,transform] duration-100 hover:border-edge hover:shadow-md active:cursor-grabbing',
+                            'cursor-grab rounded-lg border border-edge-2 bg-raised px-2.5 py-2 transition-[border-color,box-shadow,opacity,transform] duration-100 hover:border-edge hover:shadow-md focus-visible:border-accent active:cursor-grabbing',
                             dragId === card.id && 'opacity-40 shadow-xl'
                           )}
                         >
