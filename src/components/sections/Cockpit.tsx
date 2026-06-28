@@ -129,7 +129,7 @@ export function Cockpit(): React.JSX.Element {
               key={cell.title}
               delay={i * 70}
               className={cn(
-                'group relative overflow-hidden rounded-xl p-6 transition-colors duration-200 hover:border-accent/40',
+                'spotlight group relative overflow-hidden rounded-xl p-6 transition-[transform,border-color] duration-200 hover:-translate-y-0.5 hover:border-accent/40',
                 cell.span,
                 cell.panel
               )}

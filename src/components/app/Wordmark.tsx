@@ -17,7 +17,7 @@ export function Wordmark({
         className="inline-flex items-center font-mono font-bold text-accent"
         style={{ fontSize: size, letterSpacing: '-0.04em' }}
       >
-        ❯_
+        ❯<span className="wm-caret">_</span>
       </span>
       {!markOnly && (
         <span className="tracking-[-0.02em]" style={{ fontSize: size }}>

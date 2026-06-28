@@ -81,7 +81,7 @@ export function Download(): React.JSX.Element {
         {/* Tidy requirements panel. */}
         <Reveal
           delay={120}
-          className="rounded-xl border border-edge bg-raised p-6 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.7)] sm:p-7"
+          className="spotlight rounded-xl border border-edge bg-raised p-6 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.7)] sm:p-7"
         >
           <span className="font-mono text-[11px] font-medium tracking-[0.18em] text-ink-3 uppercase">
             Requirements

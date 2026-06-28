@@ -20,12 +20,29 @@ const links = [
 export function Nav(): React.JSX.Element {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [active, setActive] = useState('')
 
   useEffect(() => {
     const onScroll = (): void => setScrolled(window.scrollY > 12)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Highlight the nav link for whichever section is crossing the viewport middle.
+  useEffect(() => {
+    const els = links
+      .map((l) => document.getElementById(l.href.slice(1)))
+      .filter((el): el is HTMLElement => el !== null)
+    if (els.length === 0) return
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setActive(e.target.id)
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    )
+    els.forEach((el) => obs.observe(el))
+    return () => obs.disconnect()
   }, [])
 
   return (
@@ -43,15 +60,27 @@ export function Nav(): React.JSX.Element {
         </a>
 
         <nav className="hidden flex-1 items-center gap-1 lg:flex">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="rounded-md px-3 py-2 font-ui text-[13.5px] font-medium text-ink-2 transition-colors hover:text-ink"
-            >
-              {l.label}
-            </a>
-          ))}
+          {links.map((l) => {
+            const isActive = active === l.href.slice(1)
+            return (
+              <a
+                key={l.href}
+                href={l.href}
+                className={cn(
+                  'relative rounded-md px-3 py-2 font-ui text-[13.5px] font-medium transition-colors',
+                  isActive ? 'text-ink' : 'text-ink-2 hover:text-ink'
+                )}
+              >
+                {l.label}
+                <span
+                  className={cn(
+                    'absolute inset-x-3 -bottom-0.5 h-px origin-center bg-accent transition-transform duration-300',
+                    isActive ? 'scale-x-100' : 'scale-x-0'
+                  )}
+                />
+              </a>
+            )
+          })}
         </nav>
 
         <div className="ml-auto flex items-center gap-2 lg:ml-0">

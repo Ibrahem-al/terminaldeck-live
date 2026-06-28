@@ -27,7 +27,7 @@ export function Hero(): React.JSX.Element {
       <div aria-hidden className="bg-grid pointer-events-none absolute inset-0 opacity-40" />
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-25 blur-[120px]"
+        className="glow-drift pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-25 blur-[120px]"
         style={{ background: 'radial-gradient(circle, var(--accent), transparent 65%)' }}
       />
 

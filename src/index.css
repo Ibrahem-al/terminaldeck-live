@@ -229,30 +229,141 @@ body {
   animation: push-in 5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Scroll reveal — toggled by an IntersectionObserver hook. */
+/* Scroll reveal — toggled by an IntersectionObserver hook. Soft focus-in. */
 .reveal {
   opacity: 0;
   transform: translateY(22px);
+  filter: blur(6px);
   transition:
     opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
 }
 .reveal.is-in {
   opacity: 1;
   transform: none;
+  filter: blur(0);
 }
+
+/* ── Motion layer (taste pass: more life, all reduced-motion-safe) ── */
+
+/* Reading-progress bar, top of page. CSS scroll-driven; invisible where unsupported. */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 30%, transparent));
+  z-index: 60;
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes scroll-progress {
+  to { transform: scaleX(1); }
+}
+
+/* Cursor-follow brass border-glow on cards (--mx/--my set by the Spotlight listener). */
+.spotlight {
+  position: relative;
+}
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    220px circle at var(--mx, 50%) var(--my, -120%),
+    var(--accent),
+    transparent 60%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+.spotlight:hover::before {
+  opacity: 0.9;
+}
+
+/* Polished-brass sheen sweeping across the primary CTA on hover. */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.btn-sheen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -45%;
+  width: 38%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+}
+.btn-sheen:hover::after {
+  animation: sheen 0.85s ease;
+}
+@keyframes sheen {
+  0% { left: -45%; opacity: 0; }
+  12% { opacity: 1; }
+  100% { left: 135%; opacity: 0; }
+}
+
+/* Ambient hero glow that slowly breathes, like a light on the bridge at night. */
+@keyframes glow-drift {
+  0%, 100% { transform: translate(-50%, 0) scale(1); opacity: 0.2; }
+  50% { transform: translate(-50%, -14px) scale(1.09); opacity: 0.32; }
+}
+.glow-drift {
+  animation: glow-drift 9s ease-in-out infinite;
+}
+
+/* Terminal-cursor blink on the wordmark underscore. */
+@keyframes wm-blink {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0.12; }
+}
+.wm-caret {
+  animation: wm-blink 1.3s steps(1) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;
     transform: none;
+    filter: none;
     transition: none;
   }
   .marquee-track,
   .pulse-dot,
   .spin,
-  .caret {
+  .caret,
+  .glow-drift,
+  .wm-caret,
+  .btn-sheen::after {
     animation: none;
+  }
+  .spotlight::before,
+  .scroll-progress {
+    display: none;
   }
 }
 

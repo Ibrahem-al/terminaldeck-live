@@ -59,7 +59,7 @@ export function Personas(): React.JSX.Element {
       <div className="mt-14 grid grid-cols-1 gap-4 sm:mt-16 md:grid-cols-6">
         {personas.map((p, i) => (
           <Reveal key={p.label} delay={i * 70} className={p.span}>
-            <article className="group flex h-full flex-col gap-4 rounded-xl border border-edge bg-raised/60 p-6 transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.7)]">
+            <article className="spotlight group flex h-full flex-col gap-4 rounded-xl border border-edge bg-raised/60 p-6 transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.7)]">
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-edge-2 bg-accent-soft text-accent transition-colors duration-200 group-hover:border-accent/40">
                 <p.icon size={18} strokeWidth={1.75} />
               </span>

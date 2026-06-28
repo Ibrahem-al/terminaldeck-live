@@ -16,10 +16,12 @@ import { Faq } from './components/sections/Faq'
 import { Download } from './components/sections/Download'
 import { Footer } from './components/sections/Footer'
 import { Toaster } from './components/ui/Toaster'
+import { Spotlight } from './components/ui/Spotlight'
 
 export function App(): React.JSX.Element {
   return (
     <div className="min-h-[100dvh] overflow-x-clip bg-base">
+      <Spotlight />
       <Nav />
       <main id="top">
         <Hero />

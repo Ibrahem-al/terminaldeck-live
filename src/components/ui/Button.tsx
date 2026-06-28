@@ -13,9 +13,9 @@ const sizes: Record<Size, string> = {
 }
 
 const variants: Record<Variant, string> = {
-  // Brass primary — the locked accent. Subtle lift + warm glow on hover.
+  // Brass primary — the locked accent. Subtle lift + warm glow + a metal sheen sweep.
   primary:
-    'bg-accent text-ink-inverse shadow-[0_1px_0_0_rgba(255,255,255,0.18)_inset] hover:brightness-[1.06] hover:shadow-[0_8px_24px_-8px_var(--accent-soft)] hover:-translate-y-0.5',
+    'btn-sheen bg-accent text-ink-inverse shadow-[0_1px_0_0_rgba(255,255,255,0.18)_inset] hover:brightness-[1.06] hover:shadow-[0_8px_24px_-8px_var(--accent-soft)] hover:-translate-y-0.5',
   secondary:
     'border border-edge bg-raised/60 text-ink hover:border-accent/60 hover:bg-overlay hover:-translate-y-0.5',
   ghost: 'text-ink-2 hover:bg-raised hover:text-ink'
