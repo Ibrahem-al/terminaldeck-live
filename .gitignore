@@ -22,3 +22,6 @@ yarn-error.log*
 # playwright review artifacts
 .playwright-mcp/
 *.png
+
+# TypeScript incremental build info
+*.tsbuildinfo

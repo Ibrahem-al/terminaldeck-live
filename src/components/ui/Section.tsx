@@ -59,7 +59,7 @@ export function SectionHeading({
       )}
       <h2
         className={cn(
-          'text-balance font-ui text-[clamp(1.9rem,4.4vw,3.1rem)] leading-[1.05] font-semibold tracking-[-0.02em] text-ink',
+          'font-display text-balance text-[clamp(2rem,4.6vw,3.25rem)] leading-[1.02] font-semibold text-ink',
           centered && 'max-w-[18ch]'
         )}
       >

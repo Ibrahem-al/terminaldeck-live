@@ -77,7 +77,7 @@ export function Notifications(): React.JSX.Element {
           <Reveal as="span" className="inline-flex items-center gap-2 font-mono text-[11px] font-medium tracking-[0.22em] text-accent uppercase">
             <BellRing size={14} /> Notifications
           </Reveal>
-          <Reveal as="h2" delay={60} className="mt-4 max-w-[16ch] font-ui text-[clamp(1.9rem,4vw,2.9rem)] leading-[1.05] font-semibold tracking-[-0.02em] text-ink text-balance">
+          <Reveal as="h2" delay={60} className="mt-4 max-w-[16ch] font-display text-[clamp(2rem,4.2vw,3rem)] leading-[1.02] font-semibold text-ink text-balance">
             Walk away. We’ll tell you when it’s done.
           </Reveal>
           <Reveal as="p" delay={110} className="mt-5 max-w-[48ch] font-ui text-[1.05rem] leading-relaxed text-ink-2 text-pretty">

@@ -28,7 +28,7 @@ export function Problem(): React.JSX.Element {
           Collapses to a single stacked column under lg. */}
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16">
         <Reveal>
-          <h2 className="max-w-[16ch] text-balance font-ui text-[clamp(1.9rem,4.4vw,3.1rem)] leading-[1.05] font-semibold tracking-[-0.02em] text-ink">
+          <h2 className="max-w-[16ch] text-balance font-display text-[clamp(2rem,4.6vw,3.25rem)] leading-[1.02] font-semibold text-ink">
             Three agents in, you lose the thread.
           </h2>
           <p className="mt-5 max-w-[42ch] text-pretty font-ui text-[clamp(1rem,1.4vw,1.15rem)] leading-relaxed text-ink-2">
@@ -72,7 +72,7 @@ export function Problem(): React.JSX.Element {
           <Waves size={20} />
         </span>
         <div>
-          <h3 className="text-balance font-ui text-[clamp(1.35rem,2.6vw,1.9rem)] leading-tight font-semibold tracking-[-0.02em] text-ink">
+          <h3 className="text-balance font-display text-[clamp(1.45rem,2.8vw,2rem)] leading-tight font-semibold tracking-[-0.02em] text-ink">
             There is a calmer way to run agents.
           </h3>
           <p className="mt-1.5 max-w-[54ch] text-pretty font-ui text-[15px] leading-relaxed text-ink-2">

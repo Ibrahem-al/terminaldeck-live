@@ -4,6 +4,10 @@ import { Wordmark } from '../app/Wordmark'
 import { ThemeMenu } from '../ui/ThemeMenu'
 import { Button } from '../ui/Button'
 import { cn } from '../../lib/cn'
+import { DOWNLOAD_URL } from '../../lib/links'
+import { toast } from '../../lib/toast'
+
+const onDownload = (): void => toast('Downloading TerminalDeck for Windows…', { kind: 'download' })
 
 const links = [
   { href: '#cockpit', label: 'The cockpit' },
@@ -53,7 +57,7 @@ export function Nav(): React.JSX.Element {
         <div className="ml-auto flex items-center gap-2 lg:ml-0">
           <ThemeMenu />
           <div className="hidden sm:flex">
-            <Button href="#download" variant="primary" size="md">
+            <Button href={DOWNLOAD_URL} onClick={onDownload} variant="primary" size="md">
               <Download size={15} />
               Download
             </Button>
@@ -81,7 +85,15 @@ export function Nav(): React.JSX.Element {
                 {l.label}
               </a>
             ))}
-            <Button href="#download" variant="primary" className="mt-2" onClick={() => setMenuOpen(false)}>
+            <Button
+              href={DOWNLOAD_URL}
+              variant="primary"
+              className="mt-2"
+              onClick={() => {
+                setMenuOpen(false)
+                onDownload()
+              }}
+            >
               <Download size={15} />
               Download for Windows
             </Button>

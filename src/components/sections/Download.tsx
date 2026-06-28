@@ -2,6 +2,8 @@ import { Download as DownloadIcon, MonitorCheck, Bot, Package, Smartphone } from
 import { Section } from '../ui/Section'
 import { Button } from '../ui/Button'
 import { Reveal } from '../ui/Reveal'
+import { DOWNLOAD_URL, RELEASES_URL } from '../../lib/links'
+import { toast } from '../../lib/toast'
 
 const requirements = [
   { icon: MonitorCheck, text: 'Windows 10 or 11, 64-bit (Intel/AMD).' },
@@ -28,7 +30,7 @@ export function Download(): React.JSX.Element {
         <div className="flex flex-col items-start">
           <Reveal
             as="h2"
-            className="max-w-[14ch] text-balance font-ui text-[clamp(2.1rem,4.6vw,3.2rem)] leading-[1.04] font-semibold tracking-[-0.025em] text-ink"
+            className="max-w-[14ch] text-balance font-display text-[clamp(2.2rem,4.8vw,3.4rem)] leading-[1.0] font-semibold text-ink"
           >
             Command your fleet.
           </Reveal>
@@ -42,11 +44,28 @@ export function Download(): React.JSX.Element {
             no account.
           </Reveal>
 
-          <Reveal delay={140} className="mt-8">
-            <Button href="#" variant="primary" size="lg">
+          <Reveal delay={140} className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <Button
+              href={DOWNLOAD_URL}
+              onClick={() => toast('Downloading TerminalDeck for Windows…', { kind: 'download' })}
+              variant="primary"
+              size="lg"
+            >
               <DownloadIcon size={18} />
               Download for Windows
             </Button>
+            <a
+              href={RELEASES_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="font-ui text-[13.5px] font-medium text-ink-2 underline decoration-edge underline-offset-4 transition-colors hover:text-ink hover:decoration-accent"
+            >
+              Release notes
+            </a>
+          </Reveal>
+
+          <Reveal as="p" delay={170} className="mt-3 font-mono text-[12px] text-ink-3">
+            v0.2.0 · Windows 10/11 64-bit · ~120 MB
           </Reveal>
 
           <Reveal

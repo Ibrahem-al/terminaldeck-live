@@ -31,7 +31,7 @@ interface PaneDef {
 const PANES: PaneDef[] = [
   {
     kind: 'agent',
-    title: 'Agent Chat',
+    title: 'claude',
     badge: { label: 'Claude Code', color: '#d8a956' },
     lines: [
       L(s('◆ ', 'var(--accent)'), s('CLAUDE', A(8))),
@@ -77,7 +77,7 @@ const PANES: PaneDef[] = [
   },
   {
     kind: 'agent',
-    title: 'Agent Chat',
+    title: 'claude',
     cwd: 'docs',
     badge: { label: 'Claude Code', color: '#d8a956' },
     lines: [

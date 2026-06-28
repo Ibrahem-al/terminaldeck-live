@@ -70,7 +70,7 @@ export function KanbanDemo(): React.JSX.Element {
     )
 
   return (
-    <Section className="py-24 sm:py-32">
+    <Section id="board" className="py-24 sm:py-32">
       <SectionHeading
         title="A board that runs your tasks."
         sub="Drag a card to its column, then send it straight to a pane as a terminal command or an agent prompt. When the command exits 0, the board offers to move it to review."

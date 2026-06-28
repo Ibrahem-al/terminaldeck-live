@@ -56,7 +56,7 @@ const cells: Cell[] = [
   {
     icon: Bot,
     title: 'AI agents',
-    body: 'Run Claude Code in any pane as a raw terminal, or as a streaming chat with tool-activity cards and per-session cost. Run several at once.',
+    body: 'Run Claude Code in any pane as a real terminal: plugins, slash commands, and interactive approvals, all intact. Launch it with Ctrl+Enter and run several across tabs.',
     span: 'md:col-span-1 lg:col-span-2',
     panel: 'border border-accent/30 bg-accent-soft'
   },

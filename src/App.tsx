@@ -15,6 +15,7 @@ import { Privacy } from './components/sections/Privacy'
 import { Faq } from './components/sections/Faq'
 import { Download } from './components/sections/Download'
 import { Footer } from './components/sections/Footer'
+import { Toaster } from './components/ui/Toaster'
 
 export function App(): React.JSX.Element {
   return (
@@ -38,6 +39,7 @@ export function App(): React.JSX.Element {
         <Download />
       </main>
       <Footer />
+      <Toaster />
     </div>
   )
 }

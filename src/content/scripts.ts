@@ -1,9 +1,8 @@
 import { A, L, s, type TermStep } from '../components/app/Terminal'
-import type { ChatStep } from '../components/app/AgentChat'
 
 /* ───────────────── Terminal sessions ───────────────── */
 
-/** Hero left pane: a tight test → commit loop with real-looking colored output. */
+/** Hero left pane: a tight test → commit → dev loop with colored output. */
 export const heroTerminal: TermStep[] = [
   { cmd: 'npm test', cwd: '~\\dev\\my-app' },
   {
@@ -42,6 +41,56 @@ export const heroTerminal: TermStep[] = [
   }
 ]
 
+/** Hero right pane: Claude Code running as a real terminal (the CLI, not a chat). */
+export const heroClaude: TermStep[] = [
+  { cmd: 'claude', cwd: '~\\dev\\my-app' },
+  {
+    out: [
+      L(s('✻ ', 'var(--accent)'), s('Welcome to Claude Code', A(7))),
+      L(s('  /help for commands · cwd ', A(8)), s('~\\dev\\my-app', A(8))),
+      L(),
+      L(s('> ', A(6)), s('add a token-bucket rate limiter to the API and cover it with a test', A(7))),
+      L()
+    ]
+  },
+  { wait: 500 },
+  {
+    out: [
+      L(s('⏺ ', 'var(--accent)'), s('Read', A(4)), s('(src/server/api.ts)', A(8))),
+      L(s('  ⎿  ', A(8)), s('read 42 lines', A(8)))
+    ]
+  },
+  { wait: 400 },
+  {
+    out: [
+      L(s('⏺ ', 'var(--accent)'), s('Write', A(2)), s('(src/server/rateLimit.ts)', A(8))),
+      L(s('  ⎿  ', A(8)), s('+22 lines', A(2)))
+    ]
+  },
+  { wait: 400 },
+  {
+    out: [
+      L(s('⏺ ', 'var(--accent)'), s('Edit', A(3)), s('(src/server/api.ts)', A(8))),
+      L(s('  ⎿  ', A(8)), s('mounted the limiter before all routes', A(8)))
+    ]
+  },
+  { wait: 500 },
+  {
+    out: [
+      L(s('⏺ ', 'var(--accent)'), s('Bash', A(5)), s('(npm test -- rateLimit)', A(8))),
+      L(s('  ⎿  ', A(8)), s('5 passed', A(2)), s(' in 0.42s', A(8)))
+    ]
+  },
+  { wait: 500 },
+  {
+    out: [
+      L(),
+      L(s('⏺ ', 'var(--accent)'), s('Done. The limiter is mounted ahead of every route', A(7))),
+      L(s('  and 5 tests pass: burst, refill, per-IP, and the 429 shape.', A(7)))
+    ]
+  }
+]
+
 /** A standalone terminal-feature demo: shell switching + interactive output. */
 export const featureTerminal: TermStep[] = [
   { cmd: 'pwsh -v', cwd: 'C:\\repos\\api' },
@@ -68,76 +117,36 @@ export const featureTerminal: TermStep[] = [
   { exit: 0 }
 ]
 
-/* ───────────────── Agent sessions ───────────────── */
-
-/** Hero right pane: Claude adds a rate limiter, with streamed text + tool cards. */
-export const heroAgent: ChatStep[] = [
-  { user: 'Add a token-bucket rate limiter to the API and cover it with a test.' },
+/** Agents section: Claude Code debugging a flaky boot, in a terminal. */
+export const agentClaude: TermStep[] = [
+  { cmd: 'claude "why does the dev server log EADDRINUSE on boot?"', cwd: 'C:\\repos\\api' },
   {
-    say: "I'll add a rate limiter middleware. Let me look at how the API wires its middleware first."
+    out: [
+      L(s('✻ ', 'var(--accent)'), s('Claude Code', A(7))),
+      L()
+    ]
   },
+  { wait: 400 },
   {
-    tool: {
-      name: 'Read',
-      icon: 'read',
-      summary: 'src/server/api.ts',
-      ms: 1200,
-      preview: 'export const api = express()\napi.use(cors())\napi.use(express.json())\n// routes mounted below'
-    }
+    out: [
+      L(s('⏺ ', 'var(--accent)'), s('Bash', A(5)), s('(netstat -ano | findstr :5173)', A(8))),
+      L(s('  ⎿  ', A(8)), s('TCP 127.0.0.1:5173  LISTENING  18244', A(7)))
+    ]
   },
+  { wait: 450 },
   {
-    say: 'Got it. I\'ll add a `tokenBucket` limiter at 60 requests/min per IP, mounted before the routes.'
+    out: [
+      L(s('⏺ ', 'var(--accent)'), s('Bash', A(5)), s('(tasklist /fi "pid eq 18244")', A(8))),
+      L(s('  ⎿  ', A(8)), s('node.exe  18244  Console  92,140 K', A(7)))
+    ]
   },
+  { wait: 500 },
   {
-    tool: {
-      name: 'Write',
-      icon: 'edit',
-      summary: 'src/server/rateLimit.ts',
-      ms: 1500,
-      preview:
-        'export function tokenBucket(opts: { rpm: number }) {\n  const hits = new Map<string, number[]>()\n  return (req, res, next) => { /* … */ }\n}'
-    }
-  },
-  { tool: { name: 'Edit', icon: 'edit', summary: 'src/server/api.ts', ms: 1000 } },
-  {
-    tool: {
-      name: 'Bash',
-      icon: 'bash',
-      summary: 'npm test -- rateLimit',
-      ms: 1700,
-      preview: '✓ src/server/rateLimit.test.ts (5)\n\nTest Files  1 passed (1)\n     Tests  5 passed (5)'
-    }
-  },
-  {
-    say: 'Done. The limiter is mounted ahead of all routes and **5 tests pass**: burst, refill, per-IP isolation, and the `429` response shape. Want me to make the window configurable via `RATE_RPM`?'
-  },
-  { wait: 400 }
-]
-
-/** Standalone agent-feature demo. */
-export const featureAgent: ChatStep[] = [
-  { user: 'Why is the dev server logging "EADDRINUSE" on boot?' },
-  { say: 'That means port 5173 is already taken. Let me find what is holding it.' },
-  {
-    tool: {
-      name: 'Bash',
-      icon: 'bash',
-      summary: 'netstat -ano | findstr :5173',
-      ms: 1300,
-      preview: 'TCP    127.0.0.1:5173     LISTENING       18244'
-    }
-  },
-  {
-    tool: {
-      name: 'Bash',
-      icon: 'bash',
-      summary: 'tasklist /fi "pid eq 18244"',
-      ms: 1100,
-      preview: 'node.exe                     18244 Console      1     92,140 K'
-    }
-  },
-  {
-    say: 'A stray `node.exe` (PID 18244) from an earlier `npm run dev` never exited. Kill it with `taskkill /pid 18244 /f`, or set a different port in `vite.config.ts`. Want me to add a `predev` script that frees the port automatically?'
-  },
-  { wait: 400 }
+    out: [
+      L(),
+      L(s('⏺ ', 'var(--accent)'), s('A stray node.exe (PID 18244) from an earlier', A(7))),
+      L(s('  npm run dev never exited. Free it with', A(7))),
+      L(s('  taskkill /pid 18244 /f', A(3)), s(', or pick another port.', A(7)))
+    ]
+  }
 ]

@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { ChevronsUpDown, ListTodo, Plus, Settings, Smartphone } from 'lucide-react'
 import { cn } from '../../lib/cn'
+import { toast } from '../../lib/toast'
+import { DOWNLOAD_URL, scrollToId } from '../../lib/links'
 
 export interface Deck {
   name: string
@@ -8,24 +10,36 @@ export interface Deck {
   active?: boolean
 }
 
+const demoToast = (): void =>
+  toast('This is a live preview. Download to drive the real window.', {
+    kind: 'download',
+    href: DOWNLOAD_URL
+  })
+
 function WindowControls(): React.JSX.Element {
+  const ctrl =
+    'flex w-9 items-center justify-center text-ink-3 transition-colors hover:text-ink'
   return (
-    <div className="flex h-full items-stretch text-ink-3">
-      <span className="flex w-9 items-center justify-center">
+    <div className="flex h-full items-stretch">
+      <button className={ctrl} aria-label="Minimize (demo)" onClick={demoToast}>
         <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
           <line x1="0" y1="5" x2="10" y2="5" stroke="currentColor" strokeWidth="1" />
         </svg>
-      </span>
-      <span className="flex w-9 items-center justify-center">
+      </button>
+      <button className={ctrl} aria-label="Maximize (demo)" onClick={demoToast}>
         <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
           <rect x="0.5" y="0.5" width="9" height="9" fill="none" stroke="currentColor" strokeWidth="1" />
         </svg>
-      </span>
-      <span className="group/close flex w-9 items-center justify-center transition-colors hover:bg-danger hover:text-white">
+      </button>
+      <button
+        className="flex w-9 items-center justify-center text-ink-3 transition-colors hover:bg-danger hover:text-white"
+        aria-label="Close (demo)"
+        onClick={demoToast}
+      >
         <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
           <path d="M0 0 L10 10 M10 0 L0 10" stroke="currentColor" strokeWidth="1" />
         </svg>
-      </span>
+      </button>
     </div>
   )
 }
@@ -102,13 +116,37 @@ export function AppWindow({
         <div className="h-full flex-1" />
 
         <div className="flex shrink-0 items-center gap-0.5 px-1">
-          <button className={toolBtn} aria-label="RemoteDeck" onClick={() => onTool?.('remote')}>
+          <button
+            className={toolBtn}
+            aria-label="RemoteDeck — control from your phone"
+            onClick={() => {
+              onTool?.('remote')
+              scrollToId('remotedeck')
+              toast('RemoteDeck: control your terminals from your phone', { kind: 'info' })
+            }}
+          >
             <Smartphone size={14} />
           </button>
-          <button className={toolBtn} aria-label="Task board" onClick={() => onTool?.('kanban')}>
+          <button
+            className={toolBtn}
+            aria-label="Task board"
+            onClick={() => {
+              onTool?.('kanban')
+              scrollToId('board')
+              toast('Task board: a kanban that runs your tasks', { kind: 'info' })
+            }}
+          >
             <ListTodo size={14} />
           </button>
-          <button className={toolBtn} aria-label="Settings" onClick={() => onTool?.('settings')}>
+          <button
+            className={toolBtn}
+            aria-label="Settings and themes"
+            onClick={() => {
+              onTool?.('settings')
+              scrollToId('themes')
+              toast('Themes: 9 originals, switch any one live', { kind: 'info' })
+            }}
+          >
             <Settings size={14} />
           </button>
         </div>

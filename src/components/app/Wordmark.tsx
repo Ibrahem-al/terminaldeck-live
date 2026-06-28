@@ -11,7 +11,7 @@ export function Wordmark({
   size?: number
 }): React.JSX.Element {
   return (
-    <span className={cn('inline-flex items-center gap-2 font-ui font-semibold text-ink', className)}>
+    <span className={cn('inline-flex items-center gap-2 font-display font-semibold text-ink', className)}>
       <span
         aria-hidden
         className="inline-flex items-center font-mono font-bold text-accent"
@@ -20,7 +20,7 @@ export function Wordmark({
         ❯_
       </span>
       {!markOnly && (
-        <span className="tracking-[-0.01em]" style={{ fontSize: size }}>
+        <span className="tracking-[-0.02em]" style={{ fontSize: size }}>
           Terminal<span className="text-accent">Deck</span>
         </span>
       )}

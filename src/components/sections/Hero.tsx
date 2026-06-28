@@ -2,11 +2,12 @@ import { Download, Play, ShieldCheck, Cpu, Smartphone } from 'lucide-react'
 import { AppWindow } from '../app/AppWindow'
 import { PaneFrame } from '../app/PaneFrame'
 import { Terminal, A, L, s, type TermStep } from '../app/Terminal'
-import { AgentChat } from '../app/AgentChat'
 import { PhoneFrame, PhoneBar, KeyBar } from '../app/Phone'
 import { Button } from '../ui/Button'
 import { Reveal } from '../ui/Reveal'
-import { heroTerminal, heroAgent } from '../../content/scripts'
+import { heroTerminal, heroClaude } from '../../content/scripts'
+import { DOWNLOAD_URL } from '../../lib/links'
+import { toast } from '../../lib/toast'
 
 const phoneMirror: TermStep[] = [
   { cmd: 'claude', cwd: '~/my-app' },
@@ -41,7 +42,7 @@ export function Hero(): React.JSX.Element {
             Local-first workspace for AI coding agents · Windows
           </Reveal>
 
-          <Reveal as="h1" delay={60} className="mt-5 max-w-[50rem] font-ui text-[clamp(2.2rem,5vw,3.15rem)] leading-[1.04] font-semibold tracking-[-0.025em] text-ink text-balance">
+          <Reveal as="h1" delay={60} className="mt-5 max-w-[56rem] font-display text-[clamp(2.05rem,4.4vw,2.85rem)] leading-[1.04] font-semibold tracking-[-0.03em] text-ink text-balance">
             Command a fleet of AI agents.
             <br />
             <span className="text-ink-2">From your desk, or your pocket.</span>
@@ -53,7 +54,12 @@ export function Hero(): React.JSX.Element {
           </Reveal>
 
           <Reveal delay={180} className="mt-8 flex flex-wrap items-center gap-3">
-            <Button href="#download" variant="primary" size="lg">
+            <Button
+              href={DOWNLOAD_URL}
+              onClick={() => toast('Downloading TerminalDeck for Windows…', { kind: 'download' })}
+              variant="primary"
+              size="lg"
+            >
               <Download size={17} />
               Download for Windows
             </Button>
@@ -87,11 +93,12 @@ export function Hero(): React.JSX.Element {
               </PaneFrame>
               <PaneFrame
                 kind="agent"
-                title="Agent Chat"
+                title="claude"
+                cwd="my-app"
                 badge={{ label: 'Claude Code', color: '#d8a956' }}
                 active
               >
-                <AgentChat script={heroAgent} />
+                <Terminal script={heroClaude} defaultCwd="~\dev\my-app" />
               </PaneFrame>
             </div>
           </AppWindow>
