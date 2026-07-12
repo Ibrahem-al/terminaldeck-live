@@ -1,24 +1,9 @@
-import { Download, Play, ShieldCheck, Cpu, Smartphone } from 'lucide-react'
-import { AppWindow } from '../app/AppWindow'
-import { PaneFrame } from '../app/PaneFrame'
-import { Terminal, A, L, s, type TermStep } from '../app/Terminal'
-import { PhoneFrame, PhoneBar, KeyBar } from '../app/Phone'
+import { Download, Play, ShieldCheck, Cpu, Smartphone, Sparkles } from 'lucide-react'
+import { HeroSim } from '../app/sim/SimWindow'
 import { Button } from '../ui/Button'
 import { Reveal } from '../ui/Reveal'
-import { heroTerminal, heroClaude } from '../../content/scripts'
 import { DOWNLOAD_URL } from '../../lib/links'
 import { toast } from '../../lib/toast'
-
-const phoneMirror: TermStep[] = [
-  { cmd: 'claude', cwd: '~/my-app' },
-  {
-    out: [
-      L(s('● ', A(2)), s('Running tests…', A(7))),
-      L(s('  28 passed', A(2)), s(' in 1.2s', A(8))),
-      L(s('● ', A(2)), s('All green. Push?', A(7)))
-    ]
-  }
-]
 
 export function Hero(): React.JSX.Element {
   return (
@@ -68,56 +53,22 @@ export function Hero(): React.JSX.Element {
               See it work
             </Button>
           </Reveal>
+
+          <Reveal delay={220} className="mt-5 inline-flex items-center gap-2 font-ui text-[12.5px] text-ink-3">
+            <Sparkles size={14} className="text-accent" />
+            <span>
+              The window below is <span className="text-ink-2">live</span> — switch decks, split panes, open the
+              board, and <span className="text-accent">type real commands</span> in any terminal. Try{' '}
+              <code className="rounded bg-raised px-1 py-px font-mono text-[11.5px] text-ink-2">help</code>,{' '}
+              <code className="rounded bg-raised px-1 py-px font-mono text-[11.5px] text-ink-2">npm test</code>, or{' '}
+              <code className="rounded bg-raised px-1 py-px font-mono text-[11.5px] text-ink-2">theme ember</code>.
+            </span>
+          </Reveal>
         </div>
 
-        {/* Live app window */}
-        <Reveal delay={120} className="relative mt-14 flex items-end justify-center xl:justify-start">
-          <AppWindow
-            project={{ name: 'my-app', color: '#4cc38a' }}
-            decks={[
-              { name: 'my-app', color: '#4cc38a', active: true },
-              { name: 'job-search', color: '#5b9dd9' },
-              { name: 'scratch', color: '#b583d9' }
-            ]}
-            className="h-[clamp(420px,52vw,560px)] w-full xl:flex-1"
-          >
-            <div className="grid h-full grid-cols-1 gap-2 p-2 md:grid-cols-[1.05fr_1fr]">
-              <PaneFrame
-                kind="terminal"
-                title="pwsh"
-                cwd="my-app"
-                badge={{ label: 'Test Runner', color: '#4cc38a' }}
-                className="hidden md:flex"
-              >
-                <Terminal script={heroTerminal} defaultCwd="~\dev\my-app" />
-              </PaneFrame>
-              <PaneFrame
-                kind="agent"
-                title="claude"
-                cwd="my-app"
-                badge={{ label: 'Claude Code', color: '#d8a956' }}
-                active
-              >
-                <Terminal script={heroClaude} defaultCwd="~\dev\my-app" />
-              </PaneFrame>
-            </div>
-          </AppWindow>
-
-          {/* Phone mirror — sits beside the window with a slight overlap, never over content */}
-          <div className="z-20 mb-[-2.5rem] hidden shrink-0 xl:-ml-12 xl:block">
-            <Reveal delay={420}>
-              <PhoneFrame width={208}>
-                <PhoneBar title="pwsh · my-app" status="busy" back bell />
-                <div className="min-h-0 flex-1">
-                  <Terminal script={phoneMirror} defaultCwd="~/my-app" loop className="text-[11px]" />
-                </div>
-                <KeyBar />
-              </PhoneFrame>
-            </Reveal>
-            <div className="mt-2 text-center font-ui text-[11px] text-ink-3">
-              the <span className="text-accent">same</span> terminal, on your phone
-            </div>
-          </div>
+        {/* Live, drivable app window + phone mirror */}
+        <Reveal delay={140}>
+          <HeroSim />
         </Reveal>
 
         {/* Trust strip (kept out of the hero stack itself) */}

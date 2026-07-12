@@ -358,6 +358,9 @@ body {
   .caret,
   .glow-drift,
   .wm-caret,
+  .block-enter,
+  .toast-enter,
+  .push-in,
   .btn-sheen::after {
     animation: none;
   }

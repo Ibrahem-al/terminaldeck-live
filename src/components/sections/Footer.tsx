@@ -41,7 +41,7 @@ export function Footer(): React.JSX.Element {
               The command deck for AI-driven development.
             </p>
             <p className="mt-3 font-mono text-[11.5px] leading-relaxed text-ink-3">
-              v0.2.0 · Windows-first · fully local, fully private.
+              v0.2.1 · Windows-first · fully local, fully private.
             </p>
           </Reveal>
 

@@ -32,6 +32,14 @@ const FAQ: readonly QA[] = [
     a: 'Yes. They use Web Push, which works with the PWA backgrounded or closed. On iOS, install the PWA to your home screen first.'
   },
   {
+    q: 'Does it update itself?',
+    a: 'Yes. TerminalDeck checks for updates on launch and from Settings → Updates. When a new version is ready it downloads in the background and installs on restart — no reinstalling from the website. Your settings, projects, and paired phones are kept.'
+  },
+  {
+    q: 'Can I open more than one window?',
+    a: 'Yes. Open a new window from the title bar or with Ctrl+Shift+M — each is an independent workspace with its own tabs and terminals. Closing a window with live terminals, running agents, or unsaved files asks first, so nothing is lost by accident.'
+  },
+  {
     q: 'Why Windows only?',
     a: 'It is built Windows-first around PowerShell, ConPTY, and DPAPI. Other platforms are on the roadmap.'
   },

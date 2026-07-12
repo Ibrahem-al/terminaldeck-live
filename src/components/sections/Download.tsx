@@ -65,7 +65,7 @@ export function Download(): React.JSX.Element {
           </Reveal>
 
           <Reveal as="p" delay={170} className="mt-3 font-mono text-[12px] text-ink-3">
-            v0.2.0 · Windows 10/11 64-bit · ~120 MB
+            v0.2.1 · Windows 10/11 64-bit · ~120 MB
           </Reveal>
 
           <Reveal

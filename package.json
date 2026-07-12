@@ -1,7 +1,7 @@
 {
   "name": "terminaldeck-website",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "The interactive marketing site for TerminalDeck — command a fleet of AI coding agents from one private terminal workspace.",
   "scripts": {
