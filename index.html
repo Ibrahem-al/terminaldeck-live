@@ -2,27 +2,64 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0b0f16" />
-    <meta name="color-scheme" content="dark light" />
-
-    <title>TerminalDeck — Command your AI agents. From your desk or your pocket.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TerminalDeck: run every coding agent side by side</title>
     <meta
       name="description"
-      content="A private, Windows-native terminal workspace for running parallel AI coding agents — real PTYs, an inline editor, a kanban board, and a phone app that mirrors and controls your real terminals from anywhere."
+      content="A Windows terminal workspace for running several AI coding agents at once: real shells in decks, the Notch that tells you when an agent needs you, and agents that message each other. Free, 6.5 MB, local only."
     />
+    <link rel="canonical" href="https://terminaldeck-live.vercel.app/" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="theme-color" content="#0A1220" />
+    <meta name="color-scheme" content="dark" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="TerminalDeck — the command deck for AI-driven development" />
+    <meta property="og:site_name" content="TerminalDeck" />
+    <meta property="og:url" content="https://terminaldeck-live.vercel.app/" />
+    <meta property="og:title" content="TerminalDeck: run every coding agent side by side" />
     <meta
       property="og:description"
-      content="Run terminals, AI agents, an editor, and a task board in one Windows-native workspace — then control it from your pocket over an encrypted mesh."
+      content="Real shells in decks, a Notch that lights up when an agent needs you, agents that message each other. Free for Windows 10 and 11, 6.5 MB, local only."
     />
+    <meta property="og:image" content="https://terminaldeck-live.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="TerminalDeck: four terminal panes with coding agents, on a light chart-paper page." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="TerminalDeck: run every coding agent side by side" />
+    <meta
+      name="twitter:description"
+      content="Real shells in decks, a Notch that lights up when an agent needs you, agents that message each other. Free for Windows, 6.5 MB, local only."
+    />
+    <meta name="twitter:image" content="https://terminaldeck-live.vercel.app/og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "TerminalDeck",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Windows 10, Windows 11",
+        "softwareVersion": "0.3.9",
+        "datePublished": "2026-09-27",
+        "fileSize": "6.5 MB",
+        "downloadUrl": "https://github.com/Ibrahem-al/TerminalDeck/releases/latest/download/TerminalDeck-Setup.exe",
+        "releaseNotes": "https://github.com/Ibrahem-al/TerminalDeck/releases",
+        "url": "https://terminaldeck-live.vercel.app/",
+        "description": "A Windows terminal workspace for people who run several AI coding agents at once. Local only: no account, no cloud, no telemetry.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <p style="font-family: system-ui, sans-serif; padding: 24px; color: #e6ecf4; background: #0a1220">
+        TerminalDeck is a free Windows terminal workspace for running several AI coding agents at once.
+        <a href="https://github.com/Ibrahem-al/TerminalDeck/releases/latest/download/TerminalDeck-Setup.exe">Download for Windows</a>
+        (6.5 MB) or see <a href="https://github.com/Ibrahem-al/TerminalDeck/releases">all releases</a>.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

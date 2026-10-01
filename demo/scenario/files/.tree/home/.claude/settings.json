@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": ["Bash(npm test:*)", "Bash(npm run lint)", "Bash(git status)", "Bash(git diff:*)"],
+    "deny": ["Read(./.env)"]
+  },
+  "hooks": {
+    "SessionStart": [{ "hooks": [{ "type": "command", "command": "\"C:\\Users\\dev\\AppData\\Roaming\\quarterdeck\\notch-hook.cmd\"" }] }],
+    "Notification": [{ "hooks": [{ "type": "command", "command": "\"C:\\Users\\dev\\AppData\\Roaming\\quarterdeck\\notch-hook.cmd\"" }] }],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "\"C:\\Users\\dev\\AppData\\Roaming\\quarterdeck\\notch-hook.cmd\"" }] }],
+    "SessionEnd": [{ "hooks": [{ "type": "command", "command": "\"C:\\Users\\dev\\AppData\\Roaming\\quarterdeck\\notch-hook.cmd\"" }] }]
+  }
+}

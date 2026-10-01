@@ -1,0 +1,31 @@
+{
+  // Separate from the site's tsconfig (which includes only src/): the site's
+  // `tsc -b` never sees demo/. Check with `npm run demo:typecheck`, which runs
+  // rust_app's TypeScript so the renderer types resolve against its packages.
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noEmit": true,
+    "types": [],
+    "paths": {
+      "@renderer/*": ["../../rust_app/src/*"],
+      "@shared/*": ["../../rust_app/shared/*"],
+      "@tauri-apps/api/*": ["../../rust_app/node_modules/@tauri-apps/api/*"],
+      "vite": ["../../rust_app/node_modules/vite"]
+    }
+  },
+  "include": ["env.d.ts", "backend/**/*.ts", "boot/**/*.ts", "host/**/*.ts", "scenario/**/*.ts", "vite.config.ts"]
+}

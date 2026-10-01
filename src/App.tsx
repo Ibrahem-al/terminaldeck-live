@@ -1,47 +1,35 @@
 import { Nav } from './components/sections/Nav'
 import { Hero } from './components/sections/Hero'
-import { Problem } from './components/sections/Problem'
-import { Cockpit } from './components/sections/Cockpit'
+import { Pillars } from './components/sections/Pillars'
+import { Notch } from './components/sections/Notch'
 import { Agents } from './components/sections/Agents'
-import { Workspace } from './components/sections/Workspace'
-import { KanbanDemo } from './components/sections/KanbanDemo'
-import { ThemeGallery } from './components/sections/ThemeGallery'
-import { RemoteDeck } from './components/sections/RemoteDeck'
-import { Notifications } from './components/sections/Notifications'
-import { Comparison } from './components/sections/Comparison'
-import { Personas } from './components/sections/Personas'
-import { Architecture } from './components/sections/Architecture'
-import { Privacy } from './components/sections/Privacy'
-import { Faq } from './components/sections/Faq'
+import { Features } from './components/sections/Features'
+import { Numbers } from './components/sections/Numbers'
+import { ReleaseLog } from './components/sections/ReleaseLog'
 import { Download } from './components/sections/Download'
+import { Faq } from './components/sections/Faq'
 import { Footer } from './components/sections/Footer'
-import { Toaster } from './components/ui/Toaster'
-import { Spotlight } from './components/ui/Spotlight'
 
-export function App(): React.JSX.Element {
+/** Page order is fixed. Each section file is owned by one builder. */
+export function App() {
   return (
-    <div className="min-h-[100dvh] overflow-x-clip bg-base">
-      <Spotlight />
+    <>
+      <a className="skip-link" href="#download">
+        Skip to download
+      </a>
       <Nav />
       <main id="top">
         <Hero />
-        <Problem />
-        <Cockpit />
+        <Pillars />
+        <Notch />
         <Agents />
-        <Workspace />
-        <KanbanDemo />
-        <ThemeGallery />
-        <RemoteDeck />
-        <Notifications />
-        <Comparison />
-        <Personas />
-        <Architecture />
-        <Privacy />
-        <Faq />
+        <Features />
+        <Numbers />
+        <ReleaseLog />
         <Download />
+        <Faq />
       </main>
       <Footer />
-      <Toaster />
-    </div>
+    </>
   )
 }

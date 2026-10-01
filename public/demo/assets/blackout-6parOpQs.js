@@ -1,0 +1,1 @@
+import{c as o}from"./react-DQga7McO.js";import"./index-DnAXTA8P.js";const c=o((i,a)=>({active:!1,initialized:!1,init:()=>{if(a().initialized)return;i({initialized:!0});let e=0;window.quarterdeck.blackout.onState(t=>{e++,i({active:t})}),window.quarterdeck.blackout.current().then(t=>{e===0&&i({active:t})})},now:()=>window.quarterdeck.blackout.now()}));export{c as useBlackout};

@@ -1,37 +1,31 @@
 import { useEffect, useRef, useState } from 'react'
 
 /**
- * Reveal-on-scroll. Returns a ref + whether it has entered the viewport once.
- * Pair with the `.reveal` / `.is-in` classes in index.css.
+ * True once the element has scrolled into view (and stays true). Without IntersectionObserver,
+ * or under reduced motion, it is true from the start so nothing waits on an animation.
  */
-export function useInView<T extends HTMLElement = HTMLDivElement>(
-  options: { threshold?: number; rootMargin?: string; once?: boolean } = {}
-): { ref: React.RefObject<T>; inView: boolean } {
-  const { threshold = 0.18, rootMargin = '0px 0px -8% 0px', once = true } = options
+export function useInView<T extends Element>(threshold = 0.35) {
   const ref = useRef<T>(null)
-  const [inView, setInView] = useState(false)
-
+  const [seen, setSeen] = useState(false)
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    if (typeof IntersectionObserver === 'undefined') {
-      setInView(true)
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduced || typeof IntersectionObserver === 'undefined') {
+      setSeen(true)
       return
     }
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true)
-          if (once) obs.disconnect()
-        } else if (!once) {
-          setInView(false)
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setSeen(true)
+          io.disconnect()
         }
       },
-      { threshold, rootMargin }
+      { threshold }
     )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [threshold, rootMargin, once])
-
-  return { ref, inView }
+    io.observe(el)
+    return () => io.disconnect()
+  }, [threshold])
+  return [ref, seen] as const
 }

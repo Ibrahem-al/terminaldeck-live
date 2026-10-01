@@ -1,0 +1,517 @@
+/*
+ * The demo desktop. Deliberately quiet: a deep-navy surface in the Deepwater
+ * family (a shade apart from the app's own #0b0f16, so an inset window still
+ * reads as a window), no OS branding. No `color-scheme` here — declaring one
+ * the iframes don't share would make Chromium paint the notch overlay opaque.
+ */
+:root {
+  --desk-0: #070a10;
+  --desk-1: #0d1320;
+  --desk-line: rgba(148, 163, 184, 0.1);
+  --desk-ink: #e8ecf4;
+  --desk-ink-2: #9aa4b5;
+  --brass: #d8a956;
+  --brass-ink: #1a1408;
+  --ui: 'Schibsted Grotesk Variable', 'Schibsted Grotesk', 'Segoe UI', system-ui, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background: var(--desk-0);
+  color: var(--desk-ink);
+  font: 13px/1.45 var(--ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+.desktop {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(216, 169, 86, 0.07), transparent 55%),
+    radial-gradient(90% 70% at 85% 110%, rgba(91, 157, 217, 0.06), transparent 60%),
+    linear-gradient(180deg, var(--desk-1), var(--desk-0));
+}
+
+/* ── the app window ─────────────────────────────────────────────── */
+
+.td-window {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  background: #0b0f16;
+}
+
+/* Visible only until the app paints its own background over it. */
+.td-window::before {
+  content: 'Starting TerminalDeck…';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--desk-ink-2);
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+}
+
+.td-window iframe {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+}
+
+.td-window[data-geometry='normal'] {
+  inset: auto;
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 24px 60px -12px rgba(0, 0, 0, 0.65),
+    0 8px 20px -8px rgba(0, 0, 0, 0.5);
+}
+
+.td-window[data-state='minimized'],
+.td-window[data-state='closed'] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ── the notch overlay ──────────────────────────────────────────── */
+
+.notch-frame {
+  position: absolute;
+  z-index: 50;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 0;
+  background: transparent;
+}
+
+.notch-frame.notch-hidden {
+  visibility: hidden;
+}
+
+/* ── closed state ───────────────────────────────────────────────── */
+
+.closed-card {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: min(380px, calc(100% - 32px));
+  transform: translate(-50%, -58%);
+  padding: 28px 28px 24px;
+  border: 1px solid var(--desk-line);
+  border-radius: 10px;
+  background: rgba(11, 15, 22, 0.86);
+  text-align: center;
+}
+
+.closed-card[hidden] {
+  display: none;
+}
+
+.closed-card h1 {
+  margin: 14px 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.closed-card p {
+  margin: 0 0 20px;
+  color: var(--desk-ink-2);
+  font-size: 12.5px;
+}
+
+.closed-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary,
+.btn-quiet,
+.taskbar button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.btn-primary {
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--brass);
+  color: var(--brass-ink);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.btn-quiet {
+  padding: 7px 14px;
+  border: 1px solid var(--desk-line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--desk-ink-2);
+}
+
+.btn-quiet:hover {
+  color: var(--desk-ink);
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+/* ── taskbar strip (only while minimized or closed) ─────────────── */
+
+.taskbar {
+  position: absolute;
+  z-index: 20;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  padding: 0 10px;
+  border-top: 1px solid var(--desk-line);
+  background: rgba(7, 10, 16, 0.82);
+  backdrop-filter: blur(12px);
+}
+
+.taskbar[hidden] {
+  display: none;
+}
+
+.taskbar-app {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px 0 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--desk-ink);
+}
+
+.taskbar-app:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* The running indicator under a minimized (not closed) app. */
+.taskbar-app[data-running='true']::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--brass);
+  transform: translateX(-50%);
+}
+
+.taskbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.taskbar-reset {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--desk-ink-2);
+}
+
+.taskbar-reset:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--desk-ink);
+}
+
+.taskbar-clock {
+  min-width: 44px;
+  color: var(--desk-ink-2);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.app-mark {
+  flex: none;
+  display: block;
+}
+
+.closed-card .app-mark {
+  margin: 0 auto;
+}
+
+/* ── folder dialog (fs_pick_root) ───────────────────────────────── */
+
+.picker-scrim {
+  position: absolute;
+  z-index: 60;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(3, 5, 9, 0.55);
+}
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  width: min(620px, 100%);
+  height: min(420px, 100%);
+  overflow: hidden;
+  border: 1px solid var(--pk-edge);
+  border-radius: 10px;
+  background: var(--pk-bg);
+  color: var(--pk-ink);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.7);
+}
+
+.picker-head {
+  padding: 12px 16px 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.picker-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px 10px;
+  border-bottom: 1px solid var(--pk-edge);
+}
+
+.picker-up {
+  width: 28px;
+  height: 26px;
+  border: 1px solid var(--pk-edge);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--pk-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.picker-up:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.picker-path {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: var(--pk-field);
+  color: var(--pk-ink-2);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.picker-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.picker-places {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 150px;
+  padding: 8px;
+  border-right: 1px solid var(--pk-edge);
+  overflow-y: auto;
+}
+
+.picker-place,
+.picker-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--pk-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.picker-place svg,
+.picker-item svg {
+  flex: none;
+  color: var(--pk-accent);
+}
+
+.picker-place:hover,
+.picker-item:hover {
+  background: var(--pk-hover);
+}
+
+.picker-place[data-active='true'],
+.picker-item[aria-selected='true'] {
+  background: color-mix(in srgb, var(--pk-accent) 16%, transparent);
+}
+
+.picker-item[data-hidden='true'] {
+  color: var(--pk-ink-2);
+}
+
+.picker-list {
+  flex: 1;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.picker-empty {
+  padding: 12px 8px;
+  color: var(--pk-ink-2);
+}
+
+.picker-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--pk-edge);
+}
+
+.picker-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--pk-ink-2);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.picker .btn-primary {
+  background: var(--pk-accent);
+  color: var(--pk-accent-ink);
+}
+
+.picker .btn-quiet {
+  border-color: var(--pk-edge);
+  color: var(--pk-ink-2);
+}
+
+.picker .btn-quiet:hover {
+  color: var(--pk-ink);
+}
+
+.picker :focus-visible {
+  outline-color: var(--pk-accent);
+}
+
+@media (max-width: 520px) {
+  .picker-places {
+    display: none;
+  }
+}
+
+/* ── browser-reserved keys note ─────────────────────────────────── */
+
+.key-hint {
+  position: absolute;
+  z-index: 40;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: min(440px, calc(100% - 32px));
+  padding: 10px 10px 10px 14px;
+  border: 1px solid rgba(216, 169, 86, 0.3);
+  border-radius: 8px;
+  background: rgba(13, 19, 32, 0.96);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.6);
+  font-size: 12.5px;
+}
+
+.key-hint[hidden] {
+  display: none;
+}
+
+.key-hint p {
+  margin: 0;
+  color: var(--desk-ink-2);
+}
+
+.key-hint strong {
+  color: var(--desk-ink);
+  font-weight: 600;
+}
+
+.key-hint kbd {
+  padding: 0 4px;
+  border: 1px solid var(--desk-line);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--desk-ink);
+  font: 11.5px/1.5 var(--ui);
+}
+
+.key-hint-close {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--desk-ink-2);
+  font: 16px/1 var(--ui);
+  cursor: pointer;
+}
+
+.key-hint-close:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--desk-ink);
+}
+
+/* ── blackout cover (over everything, notch included) ───────────── */
+
+.blackout-cover {
+  position: absolute;
+  z-index: 1000;
+  inset: 0;
+  background: #000;
+  cursor: none;
+}
+
+.blackout-cover[hidden] {
+  display: none;
+}
+
+/* Inside the website's frame the clock is noise. */
+html[data-embed] .taskbar-clock {
+  display: none;
+}

@@ -1,64 +1,120 @@
-import type { ReactNode } from 'react'
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react'
 import { cn } from '../../lib/cn'
+import { DOWNLOAD_URL } from '../../lib/links'
+import { INSTALLER, VERSION } from '../../lib/facts'
 
-type Variant = 'primary' | 'secondary' | 'ghost'
-type Size = 'md' | 'lg'
+/**
+ * primary   = brass. ONLY for the Download action (brass is a product colour).
+ * secondary = ink outline on paper, for every other action ("Play the tour", "Reset").
+ * onplate   = translucent dark, for actions sitting on a product Plate (e.g. "Play the film").
+ * No arrows on buttons. Sentence case labels.
+ */
+type Variant = 'primary' | 'secondary' | 'onplate'
+type Size = 'lg' | 'md' | 'sm'
+type Icon = 'download' | 'play' | 'pause' | 'reset' | 'none'
 
-const base =
-  'group relative inline-flex items-center justify-center gap-2 rounded-lg font-ui font-semibold whitespace-nowrap transition-[transform,background-color,border-color,color,box-shadow] duration-150 active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-40'
-
-const sizes: Record<Size, string> = {
-  md: 'h-10 px-4 text-[13.5px]',
-  lg: 'h-12 px-5 text-[14.5px]'
-}
-
-const variants: Record<Variant, string> = {
-  // Brass primary — the locked accent. Subtle lift + warm glow + a metal sheen sweep.
-  primary:
-    'btn-sheen bg-accent text-ink-inverse shadow-[0_1px_0_0_rgba(255,255,255,0.18)_inset] hover:brightness-[1.06] hover:shadow-[0_8px_24px_-8px_var(--accent-soft)] hover:-translate-y-0.5',
-  secondary:
-    'border border-edge bg-raised/60 text-ink hover:border-accent/60 hover:bg-overlay hover:-translate-y-0.5',
-  ghost: 'text-ink-2 hover:bg-raised hover:text-ink'
-}
-
-export function Button({
-  children,
-  href,
-  onClick,
-  variant = 'primary',
-  size = 'md',
-  className,
-  newTab,
-  type = 'button',
-  'aria-label': ariaLabel
-}: {
-  children: ReactNode
-  href?: string
-  onClick?: () => void
+interface Common {
   variant?: Variant
   size?: Size
+  icon?: Icon
   className?: string
-  newTab?: boolean
-  type?: 'button' | 'submit'
-  'aria-label'?: string
-}): React.JSX.Element {
-  const cls = cn(base, sizes[size], variants[variant], className)
-  if (href) {
+  children: ReactNode
+}
+
+type AsLink = Common & { href: string } & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'className' | 'children'>
+type AsButton = Common & { href?: undefined } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'children'>
+
+export function Button(props: AsLink | AsButton) {
+  const { variant = 'secondary', size = 'md', icon = 'none', className, children, ...rest } = props
+  const cls = cn('btn', `btn-${variant}`, size === 'sm' && 'btn-sm', size === 'lg' && 'btn-lg', className)
+  const inner = (
+    <>
+      {icon !== 'none' ? <ButtonIcon icon={icon} size={size === 'sm' ? 14 : size === 'lg' ? 18 : 16} /> : null}
+      <span>{children}</span>
+    </>
+  )
+  if (typeof props.href === 'string') {
     return (
-      <a
-        href={href}
-        onClick={onClick}
-        aria-label={ariaLabel}
-        className={cls}
-        {...(newTab ? { target: '_blank', rel: 'noreferrer' } : {})}
-      >
-        {children}
+      <a className={cls} {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}>
+        {inner}
       </a>
     )
   }
   return (
-    <button type={type} onClick={onClick} aria-label={ariaLabel} className={cls}>
-      {children}
+    <button type="button" className={cls} {...(rest as ButtonHTMLAttributes<HTMLButtonElement>)}>
+      {inner}
     </button>
   )
+}
+
+/**
+ * The one Download button. Label "Download for Windows"; `compact` drops "for Windows" below 640 px.
+ * The accessible name always carries the version and size.
+ */
+export function DownloadButton({
+  size = 'md',
+  compact = false,
+  className
+}: {
+  size?: Size
+  compact?: boolean
+  className?: string
+}) {
+  return (
+    <Button
+      href={DOWNLOAD_URL}
+      variant="primary"
+      size={size}
+      icon={size === 'sm' ? 'none' : 'download'}
+      className={className}
+      aria-label={`Download TerminalDeck ${VERSION} for Windows, ${INSTALLER.sizeLabel}`}
+    >
+      Download
+      <span className={compact ? 'max-[640px]:hidden' : undefined}> for Windows</span>
+    </Button>
+  )
+}
+
+function ButtonIcon({ icon, size }: { icon: Exclude<Icon, 'none'>; size: number }) {
+  const common = { width: size, height: size, viewBox: '0 0 16 16', 'aria-hidden': true as const, focusable: false as const }
+  switch (icon) {
+    case 'download':
+      return (
+        <svg {...common}>
+          <path
+            d="M8 1.5v8.5M4.2 6.6 8 10.4l3.8-3.8M2 12.5v2h12v-2"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )
+    case 'play':
+      return (
+        <svg {...common}>
+          <path d="M4 2.2v11.6L13.5 8z" fill="currentColor" />
+        </svg>
+      )
+    case 'pause':
+      return (
+        <svg {...common}>
+          <path d="M4 2.5h2.6v11H4zM9.4 2.5H12v11H9.4z" fill="currentColor" />
+        </svg>
+      )
+    case 'reset':
+      return (
+        <svg {...common}>
+          <path
+            d="M2.8 8a5.2 5.2 0 1 0 1.6-3.8M2.5 1.8v3.1h3.1"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )
+  }
 }

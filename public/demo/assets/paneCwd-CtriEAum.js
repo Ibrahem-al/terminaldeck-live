@@ -1,0 +1,1 @@
+import{c as t}from"./react-DQga7McO.js";import"./index-DnAXTA8P.js";const y=t(a=>({byPane:{},setCwd:(r,e)=>a(n=>n.byPane[r]===e?n:{byPane:{...n.byPane,[r]:e}}),clear:r=>a(e=>{if(!(r in e.byPane))return e;const n={...e.byPane};return delete n[r],{byPane:n}})}));export{y as usePaneCwd};

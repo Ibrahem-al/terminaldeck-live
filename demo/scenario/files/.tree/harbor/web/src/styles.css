@@ -1,0 +1,243 @@
+:root {
+  --bg: #0f141c;
+  --panel: #161d28;
+  --line: #243044;
+  --text: #dfe6f0;
+  --muted: #8593a8;
+  --accent: #d8a956;
+  --ok: #4fbf8a;
+  --warn: #e0a84a;
+  --bad: #e06565;
+  font-family: Inter, system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.layout main {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) 2fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.header nav {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+}
+
+.header a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  font-size: 15px;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.panel-head h2 {
+  margin: 0;
+}
+
+.filters {
+  display: flex;
+  gap: 6px;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.chip-on {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.quote-form {
+  display: grid;
+  gap: 10px;
+}
+
+.quote-form label {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.dims {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+input {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+button {
+  background: var(--accent);
+  color: #1a1408;
+  border: 0;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button.ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+.rates {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.rate {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.rate-best {
+  border-color: var(--accent);
+}
+
+.rate h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.rate small {
+  color: var(--muted);
+  font-weight: 400;
+  text-transform: capitalize;
+}
+
+.ribbon {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 11px;
+  color: var(--accent);
+}
+
+.price {
+  font-size: 20px;
+  margin: 4px 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+}
+
+.shipments {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.shipments th,
+.shipments td {
+  text-align: left;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+}
+
+.shipments th {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.num {
+  text-align: right !important;
+}
+
+.late {
+  color: var(--bad);
+}
+
+.badge {
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+  background: var(--line);
+}
+
+.badge-delivered {
+  background: color-mix(in srgb, var(--ok) 20%, transparent);
+  color: var(--ok);
+}
+
+.badge-in_transit,
+.badge-out_for_delivery {
+  background: color-mix(in srgb, var(--warn) 18%, transparent);
+  color: var(--warn);
+}
+
+.badge-exception {
+  background: color-mix(in srgb, var(--bad) 20%, transparent);
+  color: var(--bad);
+}
+
+.error {
+  color: var(--bad);
+}

@@ -21,7 +21,16 @@ yarn-error.log*
 
 # playwright review artifacts
 .playwright-mcp/
+.playwright-cli/
 *.png
 
 # TypeScript incremental build info
 *.tsbuildinfo
+!src/assets/notch/*.png
+!public/og-image.png
+
+# crash dumps from Git Bash
+*.stackdump
+
+# rendered but not used by the site
+public/media/terminaldeck-film-vertical.mp4

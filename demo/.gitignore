@@ -1,0 +1,4 @@
+# Vite's dependency pre-bundle cache for the demo dev server
+.vite/
+# Vite writes the bundled config next to vite.config.ts while loading it
+vite.config.ts.timestamp-*

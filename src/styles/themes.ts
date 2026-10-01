@@ -1,5 +1,6 @@
 /**
- * TerminalDeck themes — ported verbatim from the desktop app
+ * TerminalDeck themes — colours ported verbatim from the desktop app (taglines rewritten for the site
+ * in plain words: surface and accent)
  * (app/src/renderer/src/styles/themes.ts). Each theme defines every design
  * token including a full 16-color ANSI palette. The website live-applies these
  * exactly the way the app's Settings → Themes gallery does.
@@ -30,7 +31,7 @@ export const THEMES: ThemeSpec[] = [
   {
     id: 'deepwater',
     name: 'Deepwater',
-    tagline: 'The bridge of a ship at night — ink and brass',
+    tagline: 'Deep navy surfaces, brass accent. The default.',
     kind: 'dark',
     bg: ['#0b0f16', '#11161f', '#161d29'],
     ink: ['#e8ecf4', '#9aa4b8', '#5c677c', '#0b0f16'],
@@ -49,7 +50,7 @@ export const THEMES: ThemeSpec[] = [
   {
     id: 'midnight-slate',
     name: 'Midnight Slate',
-    tagline: 'Deep cool gray, blue undertones, no noise',
+    tagline: 'Cool dark gray surfaces, soft blue accent',
     kind: 'dark',
     bg: ['#14161b', '#1a1d23', '#20242c'],
     ink: ['#dfe2e8', '#9aa1ad', '#5f6672', '#14161b'],
@@ -68,7 +69,7 @@ export const THEMES: ThemeSpec[] = [
   {
     id: 'ember',
     name: 'Ember',
-    tagline: 'Firelight in a dark room',
+    tagline: 'Warm near-black surfaces, orange accent',
     kind: 'dark',
     bg: ['#120e0b', '#1a1410', '#221a14'],
     ink: ['#f0e6dc', '#b3a698', '#6e6358', '#120e0b'],
@@ -87,7 +88,7 @@ export const THEMES: ThemeSpec[] = [
   {
     id: 'ghost',
     name: 'Ghost',
-    tagline: 'Near-white surfaces, dark text — not a light mode',
+    tagline: 'Light gray surfaces, dark text, slate-blue accent',
     kind: 'light',
     bg: ['#d6d8dc', '#dee0e4', '#e6e8ec'],
     ink: ['#26282c', '#4d5158', '#7d828a', '#f2f3f5'],
@@ -106,7 +107,7 @@ export const THEMES: ThemeSpec[] = [
   {
     id: 'obsidian-sharp',
     name: 'Obsidian Sharp',
-    tagline: 'Pure black, electric accents, maximum contrast',
+    tagline: 'Pure black surfaces, bright yellow accent',
     kind: 'dark',
     bg: ['#000000', '#0a0a0c', '#121216'],
     ink: ['#f2f2f6', '#9d9da8', '#5a5a66', '#000000'],
@@ -125,7 +126,7 @@ export const THEMES: ThemeSpec[] = [
   {
     id: 'daylight',
     name: 'Daylight',
-    tagline: 'Clean, bright, built for daytime work',
+    tagline: 'White surfaces, dark text, blue accent',
     kind: 'light',
     bg: ['#ffffff', '#f4f5f7', '#eef0f3'],
     ink: ['#1a1d23', '#495059', '#6e7682', '#ffffff'],
@@ -144,7 +145,7 @@ export const THEMES: ThemeSpec[] = [
   {
     id: 'parchment',
     name: 'Parchment',
-    tagline: 'Warm sepia for long sessions',
+    tagline: 'Warm sepia surfaces, dark brown text, amber accent',
     kind: 'light',
     bg: ['#f3ead9', '#ece1cc', '#e4d7bf'],
     ink: ['#3d3122', '#6b5c44', '#93836a', '#f8f3e8'],
@@ -163,7 +164,7 @@ export const THEMES: ThemeSpec[] = [
   {
     id: 'verdigris',
     name: 'Verdigris',
-    tagline: 'Sea-green patina on old ship bronze',
+    tagline: 'Dark green-gray surfaces, sea-green accent',
     kind: 'dark',
     bg: ['#101614', '#16201c', '#1c2a24'],
     ink: ['#dcebe2', '#94a89d', '#5b6f64', '#101614'],
@@ -182,7 +183,7 @@ export const THEMES: ThemeSpec[] = [
   {
     id: 'abyssal',
     name: 'Abyssal',
-    tagline: 'Hadal black-blue lit by bioluminescence',
+    tagline: 'Blue-black surfaces, cyan accent',
     kind: 'dark',
     bg: ['#05070d', '#0a0e18', '#101627'],
     ink: ['#d8e4f2', '#8295b3', '#4a5876', '#05070d'],

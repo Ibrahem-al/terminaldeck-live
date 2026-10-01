@@ -1,0 +1,19 @@
+[user]
+	name = Sam Rivera
+	email = sam@harbor.dev
+[init]
+	defaultBranch = main
+[core]
+	autocrlf = input
+	editor = code --wait
+[pull]
+	rebase = true
+[fetch]
+	prune = true
+[push]
+	autoSetupRemote = true
+[alias]
+	st = status -sb
+	lg = log --oneline --graph --decorate
+	amend = commit --amend --no-edit
+	unstage = restore --staged

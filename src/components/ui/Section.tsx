@@ -1,80 +1,151 @@
-import type { ReactNode } from 'react'
+import type { ElementType, ReactNode } from 'react'
 import { cn } from '../../lib/cn'
-import { Reveal } from './Reveal'
 
-/** A full-bleed section with a centered max-width content column. */
-export function Section({
-  id,
-  children,
+export type Tone = 'paper' | 'paper-deep' | 'deep'
+export type Pad = 'default' | 'tight' | 'none'
+
+/**
+ * The one container: max 1280 px of content, 32 px gutters (20 px on phones).
+ * Use it for anything that must line up with the rest of the page.
+ */
+export function Container({
+  as: Tag = 'div',
   className,
-  containerClassName,
-  grid = false
+  children
 }: {
-  id?: string
-  children: ReactNode
+  as?: ElementType
   className?: string
-  containerClassName?: string
-  grid?: boolean
-}): React.JSX.Element {
+  children: ReactNode
+}) {
+  return <Tag className={cn('wrap', className)}>{children}</Tag>
+}
+
+/**
+ * A full-bleed band (a chapter of the page): paper, paper-deep (#E3E9EE) or deep (Deepwater, light text).
+ * Section spacing is built in: clamp(96px, 12vw, 160px) top and bottom ("tight": 64-112 px).
+ * Two bands of the same tone in a row collapse the space between them.
+ * Children sit inside the container unless `bleed` is set.
+ */
+export function Band({
+  as: Tag = 'div',
+  id,
+  tone = 'paper',
+  pad = 'default',
+  flushTop = false,
+  flushBottom = false,
+  bleed = false,
+  className,
+  innerClassName,
+  labelledBy,
+  label,
+  children
+}: {
+  as?: ElementType
+  id?: string
+  tone?: Tone
+  pad?: Pad
+  flushTop?: boolean
+  flushBottom?: boolean
+  /** Don't wrap children in the container (they manage their own width). */
+  bleed?: boolean
+  className?: string
+  innerClassName?: string
+  labelledBy?: string
+  label?: string
+  children: ReactNode
+}) {
   return (
-    <section id={id} className={cn('relative scroll-mt-20', className)}>
-      {grid && <div aria-hidden className="bg-grid pointer-events-none absolute inset-0 opacity-50" />}
-      <div className={cn('relative mx-auto w-full max-w-[1180px] px-5 sm:px-8', containerClassName)}>
-        {children}
-      </div>
-    </section>
+    <Tag
+      id={id}
+      aria-labelledby={labelledBy}
+      aria-label={labelledBy ? undefined : label}
+      className={cn(
+        'band',
+        `band-${tone}`,
+        pad === 'tight' && 'band-tight',
+        pad === 'none' && 'band-flush-top band-flush-bottom',
+        flushTop && 'band-flush-top',
+        flushBottom && 'band-flush-bottom',
+        className
+      )}
+    >
+      {bleed ? children : <div className={cn('wrap', innerClassName)}>{children}</div>}
+    </Tag>
   )
 }
 
 /**
- * A section header. Eyebrow ("kicker") is opt-in and used sparingly on purpose
- * — most headlines stand alone, per the taste discipline against templated rhythm.
+ * A page section: a <section> Band. `grid` wraps children in the 12-column grid.
+ * Pass `labelledBy` (the id of your h2) or `label` for the landmark name.
  */
-export function SectionHeading({
-  kicker,
+export function Section({
+  id,
+  labelledBy,
+  label,
+  tone = 'paper',
+  pad = 'default',
+  grid = false,
+  flush = false,
+  className,
+  innerClassName,
+  children
+}: {
+  id?: string
+  labelledBy?: string
+  label?: string
+  tone?: Tone
+  pad?: Pad
+  /** Wrap children in the 12-column grid. */
+  grid?: boolean
+  /** Drop the top padding. */
+  flush?: boolean
+  /** Classes on the full-bleed <section> (the band). */
+  className?: string
+  /** Classes on the inner container. */
+  innerClassName?: string
+  children: ReactNode
+}) {
+  return (
+    <Band
+      as="section"
+      id={id}
+      tone={tone}
+      pad={pad}
+      flushTop={flush}
+      labelledBy={labelledBy}
+      label={label}
+      className={className}
+      innerClassName={innerClassName}
+    >
+      {grid ? <div className="grid-12">{children}</div> : children}
+    </Band>
+  )
+}
+
+/**
+ * The standard section head: H2 in columns 1-7, supporting text in 8-12 (stacks below 1100 px).
+ * `stack` puts the text under the title (title 1-10, text 1-7).
+ * `titleId` is what you pass to <Section labelledBy>.
+ */
+export function SectionHead({
+  titleId,
   title,
-  sub,
-  align = 'center',
+  children,
+  stack = false,
   className
 }: {
-  kicker?: string
+  titleId: string
   title: ReactNode
-  sub?: ReactNode
-  align?: 'center' | 'left'
+  children?: ReactNode
+  stack?: boolean
   className?: string
-}): React.JSX.Element {
-  const centered = align === 'center'
+}) {
   return (
-    <Reveal
-      className={cn(
-        'flex flex-col gap-4',
-        centered ? 'items-center text-center' : 'items-start text-left',
-        className
-      )}
-    >
-      {kicker && (
-        <span className="font-mono text-[11px] font-medium tracking-[0.22em] text-accent uppercase">
-          {kicker}
-        </span>
-      )}
-      <h2
-        className={cn(
-          'font-display text-balance text-[clamp(2rem,4.6vw,3.25rem)] leading-[1.02] font-semibold text-ink',
-          centered && 'max-w-[18ch]'
-        )}
-      >
+    <div className={cn('grid-12 section-head', stack && 'section-head-stack', className)}>
+      <h2 id={titleId} className="section-title h2">
         {title}
       </h2>
-      {sub && (
-        <p
-          className={cn(
-            'text-pretty font-ui text-[clamp(1rem,1.4vw,1.15rem)] leading-relaxed text-ink-2',
-            centered ? 'max-w-[58ch]' : 'max-w-[54ch]'
-          )}
-        >
-          {sub}
-        </p>
-      )}
-    </Reveal>
+      {children ? <div className="section-text">{children}</div> : null}
+    </div>
   )
 }

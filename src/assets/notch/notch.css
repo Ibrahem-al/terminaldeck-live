@@ -1,0 +1,476 @@
+/*
+ * Chapter 3, the Notch drawing. Owned by src/components/sections/Notch.tsx.
+ * Each state: a header row (h3 | body) on the 12-col grid, then the sheet: a "top of your screen"
+ * datum across the container, the crop hanging from it on the centre line, callouts either side.
+ * Wide (>= 1320 px): leaders + callouts. Narrow: lettered markers keyed under the drawing.
+ */
+
+.nt-drawing {
+  position: relative;
+}
+
+/* ---------------------------------------------------------------- One state */
+.nt-state {
+  position: relative;
+  margin: 0;
+}
+.nt-state + .nt-state {
+  margin-top: 40px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+}
+
+.nt-head {
+  align-items: baseline;
+  row-gap: 12px;
+  margin-bottom: 64px;
+}
+.nt-title {
+  grid-column: 1 / 5;
+  margin: 0;
+}
+.nt-body {
+  /* the same column as the section lead above: every text block in this chapter starts at col 8 */
+  grid-column: 8 / 13;
+  margin: 0;
+  color: var(--fg-2);
+}
+
+/* ---------------------------------------------------------------- The sheet */
+.nt-sheet {
+  position: relative;
+}
+.nt-state-working .nt-sheet {
+  padding-bottom: 104px;
+}
+.nt-state-asking .nt-sheet {
+  padding-bottom: 72px;
+}
+
+/* The datum: the top edge of your screen, with its name and this drawing's scale. */
+.nt-datum {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+  border-top: 1px solid var(--line-strong);
+}
+.nt-datum > span {
+  position: absolute;
+  bottom: 8px;
+  white-space: nowrap;
+  font-size: 17px;
+  color: var(--fg);
+}
+.nt-datum > span:first-child {
+  left: 0;
+}
+/* The scale sits under the datum, where a drafting sheet notes it. */
+.nt-datum > span:last-child {
+  left: 0;
+  bottom: auto;
+  top: 10px;
+}
+
+/* Chain line: the centre of your screen (the Notch hangs at top centre). */
+.nt-centreline {
+  position: absolute;
+  left: 50%;
+  top: -40px;
+  bottom: 0;
+  width: 1px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(82 97 122 / 0.55) 0 22px,
+    transparent 22px 27px,
+    rgb(82 97 122 / 0.55) 27px 30px,
+    transparent 30px 35px
+  );
+  pointer-events: none;
+}
+.nt-centreline > span {
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  white-space: nowrap;
+  font-size: 17px;
+  color: var(--fg);
+}
+
+/* ---------------------------------------------------------------- The crop */
+.nt-fitted {
+  position: relative;
+  z-index: 1;
+  width: var(--cw);
+  max-width: 100%;
+  margin-inline: auto;
+}
+.nt-frame {
+  position: relative;
+  width: 100%;
+}
+/* No border in the box (it would shift the pixels); the product edge is drawn on top instead. */
+.nt-crop.plate {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: 0 0 6px 6px;
+  background: #222936;
+}
+.nt-crop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-deep-edge);
+  border-top: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.nt-crop img {
+  position: absolute;
+  top: 0;
+  max-width: none;
+  height: auto;
+  user-select: none;
+}
+/* The small states, rebuilt in HTML at crop-pixel size and scaled as vectors (always sharp).
+   Measured on the captures: pill x 12-95, 13 px tall; alert x 12-373, 34 px tall. */
+.nt-live {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  font-family: 'Segoe UI', var(--font-product);
+  -webkit-font-smoothing: antialiased;
+}
+.ntl-pill {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  width: 83px;
+  height: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: #101216;
+  border-radius: 0 0 7px 7px;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.03);
+}
+.ntl-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e2a646;
+}
+.ntl-count {
+  font-size: 9.5px;
+  line-height: 1;
+  font-weight: 500;
+  color: #c9ced6;
+}
+.ntl-alert {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  width: 361px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1;
+  color: #c3c8d0;
+  background: #0f1115;
+  border: 1px solid rgb(216 169 86 / 0.32);
+  border-top: 0;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 14px rgb(216 169 86 / 0.14);
+}
+.ntl-q {
+  font-weight: 700;
+  color: #efd9a8;
+  margin-right: 8px;
+}
+.ntl-who {
+  font-weight: 700;
+  color: #f2f4f7;
+  margin-right: 4px;
+}
+.ntl-badge {
+  flex: none;
+  margin-left: 9px;
+  width: 15px;
+  height: 15px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(216 169 86 / 0.24);
+  color: #e9c57c;
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- Callouts (wide) */
+.nt-note {
+  position: absolute;
+  width: 16rem;
+  margin: 0;
+}
+.nt-note-left {
+  text-align: right;
+}
+.nt-state-opened .nt-note {
+  width: min(16rem, calc((min(100vw - 2 * var(--gutter), var(--max)) - 760px) / 2 - 48px));
+}
+
+.nt-marker {
+  position: absolute;
+  z-index: 2; /* above the chip row's fade */
+  transform: translate(-50%, -50%);
+}
+
+/* The 720 px dimension under the pulldown: extension lines drop from the panel's corners
+   (x 20 and 740 of the 760 px crop). */
+.nt-hdim {
+  position: relative;
+  margin: 8px 2.632% 0;
+  height: 40px;
+  border-left: 1px solid var(--fg-2);
+  border-right: 1px solid var(--fg-2);
+  color: var(--fg);
+}
+.nt-hdim-ln {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 26px;
+  height: 1px;
+  background: currentColor;
+}
+.nt-hdim-ln::before,
+.nt-hdim-ln::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  width: 10px;
+  height: 7px;
+  background: currentColor;
+}
+.nt-hdim-ln::before {
+  left: 0;
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+}
+.nt-hdim-ln::after {
+  right: 0;
+  clip-path: polygon(100% 50%, 0 0, 0 100%);
+}
+.nt-hdim-v {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  transform: translateX(-50%);
+  padding: 0 12px;
+  background: var(--surface);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* The lettered key: the accessible list of callouts at every width; shown on narrow screens. */
+.nt-key {
+  list-style: none;
+  margin: 32px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  max-width: 40em;
+}
+
+/* ---------------------------------------------------------------- How it knows */
+.nt-detect {
+  margin-top: 80px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line-strong);
+  row-gap: 28px;
+}
+.nt-detect-title {
+  grid-column: 1 / 4;
+  margin: 0;
+}
+.nt-detect-item {
+  grid-column: span 3;
+}
+.nt-detect-item .body {
+  margin: 0;
+  color: var(--fg-2);
+}
+.nt-detect-name {
+  margin: 0 0 8px;
+  font-size: 1.125rem;
+  font-weight: 650;
+  font-stretch: 104%;
+  color: var(--fg);
+}
+
+/* ---------------------------------------------------------------- Breakpoints */
+@media (min-width: 1320px) {
+  .nt-narrow-only {
+    display: none;
+  }
+  .nt-key {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 1319.98px) {
+  .nt-wide-only {
+    display: none;
+  }
+  .nt-state-working .nt-sheet,
+  .nt-state-asking .nt-sheet {
+    padding-bottom: 0;
+  }
+  /* Leave room for the vertical dimension on the right, symmetric so the crop stays centred. */
+  .nt-fitted {
+    max-width: calc(100% - 2 * 88px);
+  }
+  .nt-state-opened .nt-fitted {
+    max-width: 100%;
+  }
+  /* The key reads in the body column; the scale moves above the datum, right. */
+  .nt-key {
+    margin-left: calc((100% + var(--col-gap)) / 12 * 4);
+  }
+  .nt-datum > span:last-child {
+    left: auto;
+    right: 0;
+    top: auto;
+    bottom: 8px;
+  }
+  .nt-detect-title {
+    grid-column: 1 / 13;
+  }
+  .nt-detect-item {
+    grid-column: span 4;
+  }
+}
+
+@media (max-width: 1099px) {
+  .nt-key {
+    margin-left: 0;
+  }
+  .nt-title,
+  .nt-body {
+    grid-column: 1 / 13;
+  }
+  .nt-head {
+    margin-bottom: 64px;
+  }
+}
+
+@media (max-width: 760px) {
+  .nt-detect-item {
+    grid-column: 1 / 13;
+  }
+}
+
+@media (max-width: 640px) {
+  .nt-centreline {
+    display: none;
+  }
+  /* The pill: centred, with equal room either side for its dimension on the right. */
+  .nt-state-working .nt-fitted {
+    max-width: calc(100% - 2 * 80px);
+    margin-inline: auto;
+  }
+  /* The alert is shown whole, scaled to the sheet. */
+  .nt-state-asking .nt-fitted {
+    max-width: 100%;
+  }
+  /* The pulldown keeps a readable scale (about 85 %): its plate is clipped to the sheet and
+     scrolls sideways inside it, so the page itself never scrolls. */
+  .nt-state-opened .nt-sheet {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    /* overflow-x also clips vertically: room above the datum for its labels */
+    padding-top: 40px;
+    padding-bottom: 12px;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scrollbar-width: thin;
+  }
+  .nt-state-opened .nt-fitted {
+    width: 646px;
+    max-width: none;
+    margin-inline: 0;
+  }
+  .nt-state-opened .nt-datum {
+    top: 40px;
+    width: calc(100% - 2 * var(--gutter));
+    right: auto;
+    left: var(--gutter);
+  }
+  .nt-state-asking .vdim {
+    display: none;
+  }
+  .nt-hdim {
+    display: none;
+  }
+  .nt-state-asking .nt-head {
+    margin-bottom: 56px;
+  }
+  .nt-state-opened .nt-head {
+    margin-bottom: 16px;
+  }
+  .nt-head {
+    margin-bottom: 64px;
+  }
+  /* Clear of the vertical dimension's upper arrow. */
+  .nt-datum > span,
+  .nt-datum > span:last-child {
+    bottom: 22px;
+  }
+}
+
+/* Leaders here land on dark product pixels: no paper halo on the tips. */
+.nt-frame .leader-tip {
+  stroke: none;
+}
+
+/* The opened Notch's chip row scrolls in the app; the capture cuts its last chip at the pulldown's
+   edge. Let the row fade out under that edge instead (crop px: pulldown ends at x 740, chips y 36–62). */
+.nt-state-opened .nt-crop::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: calc(684 / 760 * 100%);
+  width: calc(57 / 760 * 100%);
+  top: calc(35 / 384 * 100%);
+  height: calc(28 / 384 * 100%);
+  background: linear-gradient(to right, rgb(12 14 18 / 0), #0c0e12 85%);
+  pointer-events: none;
+}
+
+/* Narrow: marker B hangs just under the alert's badge; keep it clear of the key. */
+@media (max-width: 1319.98px) {
+  .nt-state-asking .nt-sheet {
+    padding-bottom: 28px;
+  }
+}
+
+/* Wide: the "Open" callout rises above the pulldown; keep it clear of the description. */
+@media (min-width: 1320px) {
+  .nt-state-opened .nt-head {
+    margin-bottom: 104px;
+  }
+}

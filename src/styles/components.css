@@ -1,0 +1,614 @@
+/* Shared chart-room components. Each block belongs to one component in src/components/ui.
+   Colours go through the band variables (--fg, --fg-2, --line, --line-strong, --annot, --surface)
+   so every component reads correctly on paper and on Deepwater. */
+
+@layer components {
+  /* ---------------------------------------------------------------- Section head */
+  /* H2 in columns 1-7, supporting text in 8-12, bottom-aligned; stacks below 1100 px.
+     `.section-head-stack` puts the text under the title instead. */
+  /* last baseline: the lead's last line sits on the title's last line in every section. */
+  .section-head {
+    row-gap: 28px;
+    align-items: start;
+    margin-bottom: 72px;
+  }
+  @media (max-width: 640px) {
+    .section-head {
+      margin-bottom: 48px;
+    }
+  }
+  .section-head > .section-title {
+    grid-column: 1 / 8;
+  }
+  .section-head > .section-text {
+    grid-column: 8 / 13;
+    font-size: 1.25rem;
+    line-height: 1.55;
+    color: var(--fg-2);
+    text-wrap: pretty;
+  }
+  .section-head > .section-text > * + * {
+    margin-top: 0.8em;
+  }
+  .section-head-stack > .section-title {
+    grid-column: 1 / 11;
+  }
+  .section-head-stack > .section-text {
+    grid-column: 1 / 8;
+  }
+  @media (max-width: 1099px) {
+    .section-head > .section-title,
+    .section-head > .section-text {
+      grid-column: 1 / 13;
+    }
+  }
+
+  /* ---------------------------------------------------------------- Button */
+  /* sizes: sm 40 px (nav, stage controls), md 48 px (default), lg 56 px (hero, download band) */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 22px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    font-weight: 650;
+    font-stretch: 104%;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.12s ease,
+      border-color 0.12s ease,
+      color 0.12s ease;
+  }
+  .btn svg {
+    flex: none;
+  }
+  .btn-primary {
+    background: var(--color-brass);
+    border-color: var(--color-brass-edge);
+    color: var(--color-navy);
+  }
+  .btn-primary:hover {
+    background: var(--color-brass-hover);
+  }
+  .btn-primary:active {
+    background: var(--color-brass-press);
+  }
+  .band-deep .btn-primary {
+    border-color: var(--color-brass);
+  }
+  .btn-secondary {
+    background: transparent;
+    border-color: var(--line-strong);
+    color: var(--fg);
+  }
+  .btn-secondary:hover {
+    border-color: var(--fg);
+    background: color-mix(in srgb, var(--fg) 7%, transparent);
+  }
+  .btn-secondary:active {
+    background: color-mix(in srgb, var(--fg) 12%, transparent);
+  }
+  /* On a dark product plate (e.g. the film's play button) */
+  .btn-onplate {
+    background: rgb(11 15 22 / 0.72);
+    border-color: rgb(232 236 244 / 0.28);
+    color: var(--color-deep-ink);
+    backdrop-filter: blur(6px);
+  }
+  .btn-onplate:hover {
+    background: rgb(11 15 22 / 0.86);
+    border-color: rgb(232 236 244 / 0.5);
+  }
+  .btn-sm {
+    min-height: 40px;
+    padding: 0 16px;
+    font-size: 16px;
+    gap: 8px;
+    border-radius: 7px;
+  }
+  .btn-lg {
+    min-height: 56px;
+    padding: 0 28px;
+    font-size: 19px;
+    gap: 12px;
+    border-radius: 9px;
+  }
+  .btn[aria-disabled='true'],
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  /* ---------------------------------------------------------------- Meta list */
+  /* A quiet row of short facts ("Free", "6.5 MB installer"). Items are separated by a hairline
+     tick, never by middle dots. */
+  .meta-list {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--fg-2);
+  }
+  .meta-list > li {
+    display: inline-flex;
+    align-items: center;
+  }
+  .meta-list > li + li::before {
+    content: '';
+    width: 1px;
+    height: 14px;
+    margin: 0 14px;
+    background: var(--line-strong);
+  }
+
+  /* ---------------------------------------------------------------- Kbd */
+  .kbd {
+    display: inline-block;
+    font: inherit;
+    font-size: 0.88em;
+    font-weight: 500;
+    line-height: 1.35;
+    white-space: nowrap;
+    padding: 0 0.34em;
+    border: 1px solid var(--line-strong);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    background: rgb(200 215 235 / 0.06);
+  }
+  .band-deep .kbd {
+    background: rgb(255 255 255 / 0.06);
+  }
+
+  /* ---------------------------------------------------------------- Callout */
+  .callout {
+    font-style: italic;
+    font-stretch: 86%;
+    font-weight: 500;
+    color: var(--annot);
+    line-height: 1.35;
+    text-wrap: pretty;
+  }
+  .callout b,
+  .callout strong {
+    font-weight: 700;
+  }
+  .callout-sm {
+    font-size: 15px;
+  }
+  .callout-md {
+    font-size: 17px;
+  }
+  .callout-lg {
+    font-size: 19px;
+  }
+  .callout-pencil {
+    color: var(--fg-2);
+  }
+
+  /* Lettered marker (tablet/phone: callouts become A-E markers with a key). Always the paper
+     magenta with white text: it sits on product pixels. */
+  .marker {
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-magenta);
+    color: #fff;
+    box-shadow: 0 0 0 1.5px #fff;
+    font-size: 12px;
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1;
+    flex: none;
+  }
+
+  /* ---------------------------------------------------------------- Plate */
+  .plate {
+    position: relative;
+    background: var(--color-deep);
+    border: 1px solid var(--color-deep-edge);
+    border-radius: var(--radius-plate);
+    box-shadow: var(--shadow-object);
+    overflow: hidden;
+    color: var(--color-deep-ink);
+  }
+  /* On a Deepwater band a shadow can't be seen: the plate is lifted by a lighter edge instead. */
+  .band-deep .plate {
+    border-color: #2e3a4d;
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.5),
+      0 40px 90px -40px rgb(0 0 0 / 0.95);
+  }
+  .plate-crop {
+    border-top: 0;
+    border-radius: 0 0 6px 6px;
+  }
+
+  /* ---------------------------------------------------------------- Leader */
+  .leader-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .leader-casing {
+    fill: none;
+    stroke: var(--surface);
+    stroke-width: 4;
+    stroke-opacity: 0.85;
+    stroke-linecap: round;
+  }
+  .leader-line {
+    fill: none;
+    stroke: var(--annot);
+    stroke-width: 1.4;
+  }
+  .leader-tip {
+    fill: var(--annot);
+    stroke: var(--surface);
+    stroke-width: 1.5;
+  }
+  /* Draw-in. `waiting` hides every stroke; `play` draws them in order of --i. */
+  .leader-layer[data-state='waiting'] .leader-line,
+  .leader-layer[data-state='waiting'] .leader-casing {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .leader-layer[data-state='waiting'] .leader-tip {
+    opacity: 0;
+  }
+  .leader-layer[data-state='play'] .leader-line,
+  .leader-layer[data-state='play'] .leader-casing {
+    stroke-dasharray: 1;
+    animation: leader-draw 0.5s var(--ease-chart) both;
+    animation-delay: calc(var(--i, 0) * 150ms);
+  }
+  .leader-layer[data-state='play'] .leader-tip {
+    animation: leader-appear 0.3s ease both;
+    animation-delay: calc(var(--i, 0) * 150ms + 350ms);
+  }
+  /* Content drawn alongside a leader (callout text) can follow the same clock. */
+  [data-leader-state='waiting'] .leader-follow {
+    opacity: 0;
+  }
+  [data-leader-state='play'] .leader-follow {
+    animation: leader-appear 0.3s ease both;
+    animation-delay: calc(var(--i, 0) * 150ms + 350ms);
+  }
+  @keyframes leader-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes leader-appear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  /* Reduced motion: the finished drawing, always. */
+  @media (prefers-reduced-motion: reduce) {
+    .leader-layer .leader-line,
+    .leader-layer .leader-casing {
+      stroke-dasharray: none !important;
+      stroke-dashoffset: 0 !important;
+      animation: none !important;
+    }
+    .leader-layer .leader-tip,
+    .leader-follow {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+  }
+
+  /* ---------------------------------------------------------------- DimensionLine (horizontal) */
+  .dim {
+    position: relative;
+    height: 32px;
+    color: var(--fg-2);
+  }
+  .dim + .dim {
+    margin-top: 8px;
+  }
+  .dim-span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--w);
+    border-left: 1px solid currentColor;
+  }
+  .dim-span::after {
+    /* right extension line */
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 6px;
+    bottom: 0;
+    width: 1px;
+    background: currentColor;
+  }
+  .dim-ln {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 22px;
+    height: 1px;
+    background: currentColor;
+  }
+  .dim-ln::before,
+  .dim-ln::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    width: 10px;
+    height: 7px;
+    background: currentColor;
+  }
+  .dim-ln::before {
+    left: 0;
+    clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  }
+  .dim-ln::after {
+    right: 0;
+    clip-path: polygon(100% 50%, 0 0, 0 100%);
+  }
+  .dim-v {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background: var(--surface);
+    padding: 0 8px;
+    font-size: 17px;
+    line-height: 19px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .dim-note {
+    margin-left: 14px;
+    font-size: 17px;
+    line-height: 19px;
+    font-style: italic;
+    font-stretch: 86%;
+    font-weight: 500;
+    color: var(--annot);
+    white-space: nowrap;
+  }
+  .dim-after {
+    color: var(--fg);
+  }
+  .dim-after .dim-ln {
+    height: 2px;
+    top: 21.5px;
+  }
+  /* Too short to hold its own arrows and value: arrows sit outside and point in, value to the right. */
+  .dim-out .dim-ln {
+    left: -16px;
+    right: -16px;
+  }
+  .dim-out .dim-ln::before {
+    left: 4px;
+    clip-path: polygon(100% 50%, 0 0, 0 100%);
+  }
+  .dim-out .dim-ln::after {
+    right: 4px;
+    clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  }
+  .dim-out .dim-v {
+    left: calc(100% + 22px);
+    transform: none;
+    top: 13px;
+    padding: 0 4px;
+    background: none;
+  }
+  /* In-line (value fits): the note sits just past the right extension line. */
+  .dim-in .dim-note-beside {
+    position: absolute;
+    left: calc(100% + 14px);
+    top: 13px;
+    margin: 0;
+  }
+
+  /* ---------------------------------------------------------------- DimensionLine (vertical) */
+  .vdim {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 6px);
+    height: var(--h);
+    width: 34px;
+    color: var(--fg);
+    border-top: 1px solid var(--fg-2);
+    border-bottom: 1px solid var(--fg-2);
+  }
+  .vdim-ln {
+    position: absolute;
+    left: 24px;
+    top: -16px;
+    bottom: -16px;
+    width: 1px;
+    background: currentColor;
+  }
+  .vdim-ln::before,
+  .vdim-ln::after {
+    content: '';
+    position: absolute;
+    left: -3px;
+    width: 7px;
+    height: 10px;
+    background: currentColor;
+  }
+  .vdim-ln::before {
+    top: 6px;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  .vdim-ln::after {
+    bottom: 6px;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+  .vdim-v {
+    position: absolute;
+    left: 36px;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-size: 15px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Small dimension: the value stands clear of both extension lines, beside the lower arrow's tail. */
+  .vdim-small .vdim-v {
+    top: calc(100% + 3px);
+    transform: none;
+    line-height: 1.2;
+  }
+}
+
+@layer components {
+  /* A shared datum for a stack of dimensions: it starts where the extension lines start (6 px down),
+     so no line overshoots the others. */
+  .dim-datum {
+    background: linear-gradient(var(--fg-2), var(--fg-2)) no-repeat 0 6px / 1px calc(100% - 6px);
+  }
+  .dim-datum .dim-span {
+    border-left: 0;
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------------- Site footer (Deepwater band) */
+  .site-footer {
+    padding-top: clamp(72px, 8vw, 112px);
+    padding-bottom: 48px;
+  }
+  .footer-link {
+    font-size: 16px;
+    color: var(--fg-2);
+    text-decoration: none;
+    transition: color 0.12s ease;
+  }
+  .footer-link:hover {
+    color: var(--fg);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--line-strong);
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------------- Shot crop */
+  /* A window cut out of a screenshot. Desktop: --r (ratio), --w (image width as % of the window),
+     --x / --y (image offset). Phones may cut a tighter detail (one pane) with --mr, --mw, --mx, --my,
+     so a whole-window capture never shrinks into unreadable texture. */
+  .shot-crop {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: var(--r);
+  }
+  .shot-crop > img {
+    position: absolute;
+    left: var(--x, 0%);
+    top: var(--y, 0%);
+    width: var(--w, 100%);
+    max-width: none;
+    height: auto;
+  }
+  @media (max-width: 640px) {
+    .shot-crop {
+      aspect-ratio: var(--mr, var(--r));
+    }
+    .shot-crop > img {
+      left: var(--mx, var(--x, 0%));
+      top: var(--my, var(--y, 0%));
+      width: var(--mw, var(--w, 100%));
+    }
+  }
+
+  /* ---------------------------------------------------------------- Feature rows */
+  /* One split on one 12-col grid for every row: picture in 7 columns, text in 5 with an extra
+     gutter of air on the picture's side. `feat-row-l` = picture 1-7 / text 8-12;
+     `feat-row-r` = text 1-5 / picture 6-12. Below 1100 px: text, then picture. */
+  .feat-row {
+    align-items: center;
+    row-gap: 40px;
+  }
+  .feat-row + .feat-row {
+    margin-top: clamp(96px, 9vw, 128px);
+  }
+  .feat-fig,
+  .feat-text {
+    min-width: 0;
+    grid-row: 1;
+  }
+  .feat-row-l > .feat-fig {
+    grid-column: 1 / 8;
+  }
+  .feat-row-l > .feat-text {
+    grid-column: 8 / 13;
+    padding-left: var(--col-gap);
+  }
+  .feat-row-r > .feat-fig {
+    grid-column: 6 / 13;
+  }
+  .feat-row-r > .feat-text {
+    grid-column: 1 / 6;
+    padding-right: var(--col-gap);
+  }
+  /* Full-width variant: the text and its notes side by side, then the picture across the container. */
+  .feat-row-full > .feat-fig {
+    grid-column: 1 / 13;
+    grid-row: 2;
+  }
+  .feat-row-full > .feat-text {
+    grid-row: 1;
+    grid-column: 1 / 6;
+    padding-right: var(--col-gap);
+    align-self: start;
+  }
+  .feat-row-full > .feat-aside {
+    grid-row: 1;
+    grid-column: 8 / 13;
+    padding-left: var(--col-gap);
+    align-self: start;
+    min-width: 0;
+  }
+  @media (max-width: 1099px) {
+    .feat-row > .feat-text,
+    .feat-row > .feat-fig,
+    .feat-row > .feat-aside {
+      grid-column: 1 / 13;
+      grid-row: auto;
+      padding: 0;
+    }
+    .feat-row {
+      row-gap: 32px;
+    }
+    .feat-row-full > .feat-fig {
+      order: 3;
+    }
+    .feat-row-full > .feat-aside {
+      order: 2;
+    }
+  }
+}

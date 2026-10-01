@@ -1,134 +1,166 @@
-import { useEffect, useState } from 'react'
-import { Download, Menu, X } from 'lucide-react'
-import { Wordmark } from '../app/Wordmark'
-import { ThemeMenu } from '../ui/ThemeMenu'
-import { Button } from '../ui/Button'
-import { cn } from '../../lib/cn'
-import { DOWNLOAD_URL } from '../../lib/links'
-import { toast } from '../../lib/toast'
+import { useEffect, useId, useRef, useState } from 'react'
+import { DownloadButton } from '../ui/Button'
+import { Wordmark } from '../ui/Wordmark'
+import { DOCS_PATH, SECTIONS } from '../../lib/links'
 
-const onDownload = (): void => toast('Downloading TerminalDeck for Windows…', { kind: 'download' })
+const LINKS = SECTIONS.filter((s) => s.nav)
 
-const links = [
-  { href: '#cockpit', label: 'The cockpit' },
-  { href: '#agents', label: 'AI agents' },
-  { href: '#remotedeck', label: 'RemoteDeck' },
-  { href: '#themes', label: 'Themes' },
-  { href: '#faq', label: 'FAQ' }
-]
-
-export function Nav(): React.JSX.Element {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [active, setActive] = useState('')
+/**
+ * Sticky paper bar: wordmark, section links, Docs, Download. Below 1100 px the links fold into
+ * a menu (button with aria-expanded / aria-controls; Escape and link clicks close it).
+ * The current section is marked with aria-current and a 2 px navy underline (magenta is kept for annotations and focus).
+ */
+export function Nav({ docs = false }: { docs?: boolean } = {}) {
+  // On /docs the section links point back to the home page and Docs is the current page.
+  const site = docs ? '../' : ''
+  const docsHref = docs ? './' : DOCS_PATH
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState<string | null>(null)
+  const menuId = useId()
+  const btnRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    const onScroll = (): void => setScrolled(window.scrollY > 12)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    if (!open) return
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') {
+        setOpen(false)
+        btnRef.current?.focus()
+      }
+    }
+    const onResize = (): void => {
+      if (window.innerWidth >= 1100) setOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('resize', onResize)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [open])
 
-  // Highlight the nav link for whichever section is crossing the viewport middle.
+  // Scroll-spy: the section whose top has passed ~40 % of the viewport.
   useEffect(() => {
-    const els = links
-      .map((l) => document.getElementById(l.href.slice(1)))
-      .filter((el): el is HTMLElement => el !== null)
-    if (els.length === 0) return
-    const obs = new IntersectionObserver(
+    if (docs || typeof IntersectionObserver === 'undefined') return
+    const els = LINKS.map((l) => document.getElementById(l.id)).filter((e): e is HTMLElement => !!e)
+    if (!els.length) return
+    const seen = new Map<string, boolean>()
+    const io = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(e.target.id)
+        entries.forEach((e) => seen.set(e.target.id, e.isIntersecting))
+        const first = LINKS.find((l) => seen.get(l.id))
+        setActive(first ? first.id : null)
       },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+      { rootMargin: '-40% 0px -55% 0px' }
     )
-    els.forEach((el) => obs.observe(el))
-    return () => obs.disconnect()
-  }, [])
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [docs])
 
   return (
-    <header
-      className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-colors duration-300',
-        scrolled
-          ? 'border-b border-edge-2 bg-base/80 backdrop-blur-xl'
-          : 'border-b border-transparent'
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-[1180px] items-center gap-6 px-5 sm:px-8">
-        <a href="#top" className="shrink-0" aria-label="TerminalDeck home">
-          <Wordmark size={17} />
+    <header className="site-nav sticky top-0 z-50 border-b border-rule bg-paper">
+      <div className="wrap flex h-[var(--nav-h)] items-center gap-10 max-[640px]:gap-4">
+        <a
+          href={docs ? '../' : '#top'}
+          className="rounded-sm no-underline"
+          aria-label={docs ? 'TerminalDeck home' : 'TerminalDeck, back to top'}
+        >
+          <Wordmark size={19} />
         </a>
 
-        <nav className="hidden flex-1 items-center gap-1 lg:flex">
-          {links.map((l) => {
-            const isActive = active === l.href.slice(1)
-            return (
-              <a
-                key={l.href}
-                href={l.href}
-                className={cn(
-                  'relative rounded-md px-3 py-2 font-ui text-[13.5px] font-medium transition-colors',
-                  isActive ? 'text-ink' : 'text-ink-2 hover:text-ink'
-                )}
-              >
-                {l.label}
-                <span
-                  className={cn(
-                    'absolute inset-x-3 -bottom-0.5 h-px origin-center bg-accent transition-transform duration-300',
-                    isActive ? 'scale-x-100' : 'scale-x-0'
-                  )}
-                />
-              </a>
-            )
-          })}
+        <nav aria-label="Sections" className="ml-auto max-[1099px]:hidden">
+          <ul className="m-0 flex list-none items-center gap-8 p-0">
+            {LINKS.map((l) => (
+              <li key={l.id}>
+                <NavLink href={`${site}#${l.id}`} current={active === l.id}>
+                  {l.label}
+                </NavLink>
+              </li>
+            ))}
+            <li>
+              <NavLink href={docsHref} current={docs} page>
+                Docs
+              </NavLink>
+            </li>
+          </ul>
         </nav>
 
-        <div className="ml-auto flex items-center gap-2 lg:ml-0">
-          <ThemeMenu />
-          <div className="hidden sm:flex">
-            <Button href={DOWNLOAD_URL} onClick={onDownload} variant="primary" size="md">
-              <Download size={15} />
-              Download
-            </Button>
-          </div>
+        <div className="flex items-center gap-3 max-[1099px]:ml-auto max-[640px]:gap-2">
+          <DownloadButton size="sm" compact className="min-[641px]:min-h-11 min-[641px]:px-5" />
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-edge text-ink-2 lg:hidden"
-            aria-label="Menu"
-            onClick={() => setMenuOpen((o) => !o)}
+            ref={btnRef}
+            type="button"
+            className="hidden h-10 items-center gap-2 rounded-[7px] border border-rule-strong px-3.5 text-16 font-medium text-ink hover:border-ink hover:bg-ink/5 max-[640px]:px-3 max-[479px]:w-10 max-[479px]:justify-center max-[479px]:px-0 max-[1099px]:inline-flex"
+            aria-expanded={open}
+            aria-controls={menuId}
+            onClick={() => setOpen((o) => !o)}
           >
-            {menuOpen ? <X size={16} /> : <Menu size={16} />}
+            <MenuGlyph open={open} />
+            <span className="max-[479px]:sr-only">Menu</span>
           </button>
         </div>
       </div>
 
-      {menuOpen && (
-        <div className="border-t border-edge-2 bg-base/95 backdrop-blur-xl lg:hidden">
-          <nav className="mx-auto flex max-w-[1180px] flex-col gap-1 px-5 py-3">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setMenuOpen(false)}
-                className="rounded-md px-3 py-2.5 font-ui text-[14px] font-medium text-ink-2 hover:bg-raised hover:text-ink"
-              >
-                {l.label}
-              </a>
+      <div id={menuId} hidden={!open} className="border-t border-rule bg-paper min-[1100px]:hidden">
+        <nav aria-label="Sections" className="wrap py-3">
+          <ul className="m-0 list-none p-0">
+            {LINKS.map((l) => (
+              <li key={l.id} className="border-b border-rule last:border-b-0">
+                <a
+                  href={`${site}#${l.id}`}
+                  onClick={() => setOpen(false)}
+                  aria-current={active === l.id ? 'true' : undefined}
+                  className="block py-4 text-21 font-medium text-ink no-underline aria-[current]:underline aria-[current]:decoration-2 aria-[current]:underline-offset-[6px]"
+                >
+                  {l.label}
+                </a>
+              </li>
             ))}
-            <Button
-              href={DOWNLOAD_URL}
-              variant="primary"
-              className="mt-2"
-              onClick={() => {
-                setMenuOpen(false)
-                onDownload()
-              }}
-            >
-              <Download size={15} />
-              Download for Windows
-            </Button>
-          </nav>
-        </div>
-      )}
+            <li>
+              <a
+                href={docsHref}
+                aria-current={docs ? 'page' : undefined}
+                className="block py-4 text-21 font-medium text-ink no-underline aria-[current]:underline aria-[current]:decoration-2 aria-[current]:underline-offset-[6px]"
+              >
+                Docs
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </header>
+  )
+}
+
+function NavLink({
+  href,
+  current,
+  page = false,
+  children
+}: {
+  href: string
+  current?: boolean
+  page?: boolean
+  children: string
+}) {
+  return (
+    <a
+      href={href}
+      aria-current={current ? (page ? 'page' : 'true') : undefined}
+      className="text-[17px] font-medium whitespace-nowrap text-pencil no-underline decoration-1 underline-offset-[6px] hover:text-ink hover:underline aria-[current]:text-ink aria-[current]:underline aria-[current]:decoration-ink aria-[current]:decoration-2"
+    >
+      {children}
+    </a>
+  )
+}
+
+function MenuGlyph({ open }: { open: boolean }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false" className="flex-none">
+      {open ? (
+        <path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      ) : (
+        <path d="M2 4.5h12M2 8h12M2 11.5h12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      )}
+    </svg>
   )
 }

@@ -1,19 +1,21 @@
 {
   "name": "terminaldeck-website",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
-  "description": "The interactive marketing site for TerminalDeck — command a fleet of AI coding agents from one private terminal workspace.",
+  "description": "The TerminalDeck website: a Windows terminal workspace for running several AI coding agents at once.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview --port 4317"
+    "preview": "vite preview --port 4317",
+    "demo:dev": "node ../rust_app/node_modules/vite/bin/vite.js --config demo/vite.config.ts",
+    "build:demo": "node ../rust_app/node_modules/vite/bin/vite.js build --config demo/vite.config.ts",
+    "demo:preview": "node ../rust_app/node_modules/vite/bin/vite.js preview --config demo/vite.config.ts --outDir ../public",
+    "demo:typecheck": "node ../rust_app/node_modules/typescript/bin/tsc -p demo/tsconfig.json"
   },
   "dependencies": {
-    "@fontsource-variable/geist": "^5.2.9",
-    "@fontsource-variable/space-grotesk": "^5.2.10",
+    "@fontsource-variable/archivo": "^5.3.0",
     "lucide-react": "^0.469.0",
-    "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -24,6 +26,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "marked": "^15.0.12",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2",
     "vite": "^6.0.5"
