@@ -1,9 +1,10 @@
 import { Nav } from './components/sections/Nav'
 import { Hero } from './components/sections/Hero'
-import { Pillars } from './components/sections/Pillars'
+import { LiveDemo } from './components/sections/LiveDemo'
 import { Notch } from './components/sections/Notch'
 import { Agents } from './components/sections/Agents'
 import { Features } from './components/sections/Features'
+import { Film } from './components/sections/Film'
 import { Numbers } from './components/sections/Numbers'
 import { ReleaseLog } from './components/sections/ReleaseLog'
 import { Download } from './components/sections/Download'
@@ -20,10 +21,11 @@ export function App() {
       <Nav />
       <main id="top">
         <Hero />
-        <Pillars />
+        <LiveDemo />
         <Notch />
         <Agents />
         <Features />
+        <Film />
         <Numbers />
         <ReleaseLog />
         <Download />

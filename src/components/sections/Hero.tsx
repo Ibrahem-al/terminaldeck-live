@@ -1,28 +1,51 @@
-import { Button, DownloadButton } from '../ui/Button'
-import { HeroStage } from '../hero/HeroStage'
+import { BellRing, LayoutGrid, MessagesSquare } from 'lucide-react'
+import { DownloadButton } from '../ui/Button'
 import { HeroNotch, useNotchSequence } from '../hero/HeroNotch'
-import { INSTALLER, REQUIREMENTS, SHELLS, VERSION } from '../../lib/facts'
+import { FilmBackdrop } from '../hero/FilmBackdrop'
+import { WatchFilm } from '../hero/WatchFilm'
+import { COUNTS, INSTALLER, REQUIREMENTS, VERSION } from '../../lib/facts'
 
-const WORKS_WITH = ['Claude Code', 'Codex', 'Gemini CLI', ...SHELLS.filter((s) => s !== 'PowerShell 7')]
+/** The three reasons, sitting on the hero's bottom edge; each one jumps to its section. */
+const REASONS = [
+  {
+    href: '#workspace',
+    icon: LayoutGrid,
+    title: 'Decks of real terminals',
+    text: `Up to ${COUNTS.panesPerDeckMax} shells per tab. Split, swap, zoom or pin a pane without stopping it.`
+  },
+  {
+    href: '#notch',
+    icon: BellRing,
+    title: 'The Notch',
+    text: 'A pill at the top of your screen lights up when an agent asks. Answer it from any window.'
+  },
+  {
+    href: '#agents',
+    icon: MessagesSquare,
+    title: 'Agents that talk',
+    text: 'Every claude or codex you start can message the agent next door, and you see every message.'
+  }
+]
 
 /**
- * The hero. On load, the Notch hangs from the nav and asks a question while the headline rises in
- * under it; the light behind the live demo warms while the question is up. Then the real app,
- * then the "works with" row.
+ * The hero. The film's teaser loops behind the headline as a moving background; "Watch the film"
+ * takes the visitor down to the film's own section and plays it there. The Notch hangs from the nav and
+ * asks its question while the headline rises in; the three reasons follow along the bottom edge.
  */
 export function Hero() {
   const notch = useNotchSequence()
   return (
-    <section id="demo" aria-labelledby="hero-title" className="band band-paper hero2" data-notch={notch}>
+    <section id="intro" aria-labelledby="hero-title" className="hero3" data-notch={notch}>
+      <FilmBackdrop />
       <HeroNotch state={notch} />
-      <div className="wrap">
-        <div className="hero2-intro">
+      <div className="wrap hero3-body">
+        <div className="hero3-intro">
           <a className="pill-link rise" style={{ animationDelay: '0.05s' }} href="#releases">
             <span className="dot" aria-hidden="true" />
             v{VERSION}: agents can now message each other
             <span className="tag">What’s new</span>
           </a>
-          <h1 id="hero-title" className="hero2-title">
+          <h1 id="hero-title" className="hero3-title">
             <span className="rise-line" style={{ animationDelay: '0.15s' }}>
               Run every coding
             </span>{' '}
@@ -30,36 +53,32 @@ export function Hero() {
               agent side by side
             </span>
           </h1>
-          <p className="hero2-lead rise" style={{ animationDelay: '0.42s' }}>
+          <p className="hero3-lead rise" style={{ animationDelay: '0.42s' }}>
             Tile real terminals into decks, know the moment an agent needs you, and let your agents message each
             other. Local only: no account, no cloud, no telemetry.
           </p>
-          <div className="hero2-ctas rise" style={{ animationDelay: '0.52s' }}>
+          <div className="hero3-ctas rise" style={{ animationDelay: '0.52s' }}>
             <DownloadButton size="lg" />
-            <Button href="#hero-stage" variant="secondary" size="lg" icon="play">
-              Try the live demo
-            </Button>
+            <WatchFilm className="btn-glass" />
           </div>
-          <ul className="hero2-meta tnum rise" style={{ animationDelay: '0.6s' }} aria-label="About the download">
+          <ul className="hero3-meta tnum rise" style={{ animationDelay: '0.6s' }} aria-label="About the download">
             <li>Free</li>
             <li>{INSTALLER.sizeLabel} installer</li>
             <li>{REQUIREMENTS.osShort}</li>
           </ul>
         </div>
+      </div>
 
-        <div className="stage-wrap rise" style={{ animationDelay: '0.7s' }}>
-          <div className="stage-glow" aria-hidden="true" />
-          <div id="hero-stage" className="band-deep stage-card">
-            <HeroStage />
-          </div>
-        </div>
-
-        <ul className="works-with" aria-label="Works with">
-          <li className="works-label" aria-hidden="true">
-            Works with
-          </li>
-          {WORKS_WITH.map((name) => (
-            <li key={name}>{name}</li>
+      <div id="features" className="hero3-reasons">
+        <ul className="wrap hero3-reasons-list">
+          {REASONS.map(({ href, icon: Icon, title, text }, i) => (
+            <li key={href} className="rise" style={{ animationDelay: `${0.72 + i * 0.09}s` }}>
+              <a href={href} className="reason">
+                <Icon size={22} strokeWidth={2} aria-hidden="true" className="reason-icon" />
+                <span className="reason-title">{title}</span>
+                <span className="reason-text">{text}</span>
+              </a>
+            </li>
           ))}
         </ul>
       </div>

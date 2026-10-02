@@ -76,10 +76,27 @@ function useMedia(query: string): boolean {
  * reaches for it: the pointer enters the window, focus moves into the stage, or a control is used.
  * Below 900 px the 1280-wide app is too small to use, so the poster stays with a full-screen link.
  *
- * The Film tab appears only once the film is published, and Play the tour only when the deployed
+ * The Film tab appears only once the film is published (never with withFilm off, where the page has
+ * its own film player), and Play the tour only when the deployed
  * demo has a real tour.
  */
-export function HeroStage() {
+/** What the page around the stage hears about the guided tour. */
+export interface TourProgress {
+  running: boolean
+  index: number
+  total: number
+  done: boolean
+  supported: boolean
+}
+
+/** Ask the stage to start (or stop) its guided tour from anywhere on the page. */
+export const TOUR_EVENT = 'td:tour'
+
+export function HeroStage({
+  withFilm = true,
+  onTour,
+  tourButton = true
+}: { withFilm?: boolean; onTour?: (t: TourProgress) => void; tourButton?: boolean } = {}) {
   const reduced = useReducedMotion()
   const narrow = useMedia('(max-width: 899px)')
   const [theme] = useProductTheme()
@@ -117,6 +134,7 @@ export function HeroStage() {
 
   // The Film tab exists only once the film is published; its length is read from the file itself.
   useEffect(() => {
+    if (!withFilm) return
     const ac = new AbortController()
     let probe: HTMLVideoElement | null = null
     mediaAvailable(MEDIA.film.mp4, ac.signal).then((ok) => {
@@ -139,7 +157,7 @@ export function HeroStage() {
       ac.abort()
       probe?.removeAttribute('src')
     }
-  }, [])
+  }, [withFilm])
 
   // Mount the app only when the visitor reaches for it (see the note above).
   const reach = useCallback(() => {
@@ -323,6 +341,26 @@ export function HeroStage() {
     setWanted(true)
     setWantTour(true)
   }
+  // Buttons elsewhere on the page (the section's own "Play the tour") drive the same control.
+  const playTourRef = useRef(playTour)
+  playTourRef.current = playTour
+  useEffect(() => {
+    const on = (): void => playTourRef.current()
+    window.addEventListener(TOUR_EVENT, on)
+    return () => window.removeEventListener(TOUR_EVENT, on)
+  }, [])
+  const onTourRef = useRef(onTour)
+  onTourRef.current = onTour
+  useEffect(() => {
+    onTourRef.current?.({
+      running: touring,
+      index: state.tour?.index ?? -1,
+      total: state.tour?.total ?? 0,
+      done: !!state.tourDone?.completed,
+      supported: tourSupported && avail !== 'no' && !narrow
+    })
+  }, [touring, state.tour?.index, state.tour?.total, state.tourDone, tourSupported, avail, narrow])
+
   // Reset is always shown; it is enabled once the demo has something to undo.
   const changed = interacted || touring || !!state.tourDone || state.resetting
   const reset = (): void => {
@@ -518,7 +556,7 @@ export function HeroStage() {
         ) : (
           <>
             <div className="flex flex-wrap items-center gap-2.5">
-              {tourSupported || touring ? (
+              {tourButton && (tourSupported || touring) ? (
                 <Button
                   variant="secondary"
                   size="sm"

@@ -200,3 +200,15 @@ export async function mediaAvailable(url: string, signal?: AbortSignal): Promise
     return false
   }
 }
+
+/** The guided tour's steps, word for word as the demo announces them (mirrors STEPS in demo/host/tour.ts). */
+export const TOUR_STEPS = [
+  'One deck: Claude Code, Codex, a dev server and a shell',
+  'Asking Claude to add rate limiting',
+  'Claude reads the code and edits the middleware',
+  'A permission question drops out of the notch',
+  'Answered from the notch — the tests run',
+  'Claude asks Codex for a review',
+  'Codex replies — the message flies back',
+  'Turn finished — the notch says so'
+] as const

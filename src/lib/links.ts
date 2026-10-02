@@ -26,17 +26,30 @@ export const DEMO_FULL_PATH = './demo/index.html'
 export const MEDIA = {
   film: { mp4: './media/terminaldeck-film.mp4', webm: './media/terminaldeck-film.webm', mp4_720: './media/terminaldeck-film-720.mp4' },
   teaser: { mp4: './media/teaser.mp4', webm: './media/teaser.webm' },
+  filmLength: '1:20',
+  /** Chapter starts in seconds: eight of the film's ten scenes (two-second bars at 120 BPM; see hype-video/src/scenes). */
+  chapters: [
+    { at: 0, title: 'One agent, one window' },
+    { at: 12, title: 'Too many windows' },
+    { at: 16, title: 'Decks' },
+    { at: 24, title: 'Agents at work' },
+    { at: 32, title: 'The Notch' },
+    { at: 40, title: 'Agents talk' },
+    { at: 48, title: 'Small and fast' },
+    { at: 56, title: 'Themes and the rest' }
+  ],
   poster: './media/poster.jpg',
   ogImage: './og-image.png'
 } as const
 
 /** Page sections, in order. Nav and Footer read this; ids are the anchor targets. */
 export const SECTIONS = [
-  { id: 'demo', label: 'Live demo', nav: false },
-  { id: 'features', label: 'Features', nav: true },
+  { id: 'features', label: 'Features', nav: false },
+  { id: 'demo', label: 'Live demo', nav: true },
   { id: 'notch', label: 'The Notch', nav: true },
   { id: 'agents', label: 'Agents', nav: true },
   { id: 'workspace', label: 'Workspace', nav: false },
+  { id: 'film', label: 'Film', nav: true },
   { id: 'speed', label: 'Performance', nav: true },
   { id: 'releases', label: 'Releases', nav: true },
   { id: 'download', label: 'Download', nav: false },
